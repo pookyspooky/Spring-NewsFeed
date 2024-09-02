@@ -4,9 +4,13 @@ import com.sparta.springnewsfeed.domain.user.entity.Timestamped;
 import com.sparta.springnewsfeed.domain.user.entity.User;
 import com.sparta.springnewsfeed.domain.post.entity.Post;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "comments")
+@Getter
+@Table(name = "comment")
+@NoArgsConstructor
 public class Comment extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
