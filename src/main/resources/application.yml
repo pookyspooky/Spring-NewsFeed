@@ -1,0 +1,34 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+    encoding:
+      charset : UTF-8
+      enabled: true
+      force: true
+
+spring:
+  application:
+    name: Spring-Newsfeed
+  datasource:
+    url: jdbc:mysql://localhost:3306/newsfeed
+    username: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: 12345
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+
+jwt:
+  secret:
+    key: ${JWT_SECRET_KEY}
+  admin:
+    token: ${ADMIN_TOKEN}

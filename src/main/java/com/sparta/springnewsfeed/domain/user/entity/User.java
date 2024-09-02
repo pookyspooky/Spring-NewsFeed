@@ -1,9 +1,16 @@
 package com.sparta.springnewsfeed.domain.user.entity;
 
+import com.sparta.springnewsfeed.domain.comment.entity.Comment;
+import com.sparta.springnewsfeed.domain.friendList.entity.FriendList;
+import com.sparta.springnewsfeed.domain.post.entity.Post;
+import com.sparta.springnewsfeed.domain.profile.entity.Profile;
 import com.sparta.springnewsfeed.domain.user.dto.UserRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,6 +26,18 @@ public class User extends Timestamped{
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @OneToOne(mappedBy = "user")
+    private Profile profile;
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> postList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Comment> commentList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<FriendList> friendListList;
 
     public User(UserRequestDto userRequest){
         this.username = userRequest.getUsername();
