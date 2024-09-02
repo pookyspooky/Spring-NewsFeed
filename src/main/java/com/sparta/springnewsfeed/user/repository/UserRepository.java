@@ -1,6 +1,6 @@
-package com.sparta.springnewsfeed.repository;
+package com.sparta.springnewsfeed.user.repository;
 
-import com.sparta.springnewsfeed.entity.User;
+import com.sparta.springnewsfeed.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -1,12 +1,13 @@
-package com.sparta.springnewsfeed.dto;
+package com.sparta.springnewsfeed.user.dto;
 
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
 
+
 @Getter
-public class UserRequestDto {
-    private String username;
+public class LoginRequestDto {
     @Email
     private String email;
+
     private String password;
 }
