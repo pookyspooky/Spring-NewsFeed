@@ -1,10 +1,10 @@
-package com.sparta.springnewsfeed.user.service;
+package com.sparta.springnewsfeed.domain.user.service;
 
-import com.sparta.springnewsfeed.user.dto.LoginRequestDto;
-import com.sparta.springnewsfeed.user.dto.UserRequestDto;
-import com.sparta.springnewsfeed.user.dto.UserResponseDto;
-import com.sparta.springnewsfeed.user.entity.User;
-import com.sparta.springnewsfeed.user.repository.UserRepository;
+import com.sparta.springnewsfeed.domain.user.dto.LoginRequestDto;
+import com.sparta.springnewsfeed.domain.user.dto.UserRequestDto;
+import com.sparta.springnewsfeed.domain.user.dto.UserResponseDto;
+import com.sparta.springnewsfeed.domain.user.entity.User;
+import com.sparta.springnewsfeed.domain.user.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

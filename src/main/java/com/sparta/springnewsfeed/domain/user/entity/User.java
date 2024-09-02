@@ -1,6 +1,6 @@
-package com.sparta.springnewsfeed.user.entity;
+package com.sparta.springnewsfeed.domain.user.entity;
 
-import com.sparta.springnewsfeed.user.dto.UserRequestDto;
+import com.sparta.springnewsfeed.domain.user.dto.UserRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

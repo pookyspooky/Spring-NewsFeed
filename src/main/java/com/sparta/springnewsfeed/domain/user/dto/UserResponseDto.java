@@ -1,6 +1,6 @@
-package com.sparta.springnewsfeed.user.dto;
+package com.sparta.springnewsfeed.domain.user.dto;
 
-import com.sparta.springnewsfeed.user.entity.User;
+import com.sparta.springnewsfeed.domain.user.entity.User;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

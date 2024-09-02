@@ -1,4 +1,4 @@
-package com.sparta.springnewsfeed.user.entity;
+package com.sparta.springnewsfeed.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
