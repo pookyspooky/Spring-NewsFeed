@@ -17,16 +17,22 @@ public class ProfileService {
     private final UserRepository userRepository;
 
     public CreateProfileResponseDto createProfile(Long id, CreateProfileRequestDto createProfileRequestDto) {
+        // 1. 사용자 조회
         User user = userRepository.findById(id)
                 .orElseThrow(()-> new IllegalArgumentException("선택한 유저가 존재하지 않습니다."));
 
-        // 1. 프로필 생성
+        // 2. 이미 프로필이 있는지 확인
+        if(user.getProfile() != null){
+            throw new IllegalArgumentException("이미 프로필이 등록된 사용자입니다.");
+        }
+
+        // 3. 프로필 생성
         Profile profile = new Profile(createProfileRequestDto, user);
 
-        // 2. db 저장
+        // 4. DB 저장
         Profile saveProfile = profileRepository.save(profile);
 
-        // 3. 저장된 프로필과 게시글을 응답 DTO 생성 후 반환
+        // 5. 저장된 프로필과 게시글을 응답 DTO 생성 후 반환
         return new CreateProfileResponseDto((saveProfile));
     }
 }
