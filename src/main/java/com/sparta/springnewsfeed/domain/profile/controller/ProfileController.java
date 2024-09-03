@@ -19,8 +19,13 @@ public class ProfileController {
         return ResponseEntity.ok(profileService.createProfile(id, createProfileRequestDto));
     }
 
-//    @GetMapping("/profile/{userId}")
-//    public ResponseEntity<GetProfileResponseDto> getProfile(@PathVariable(value = "userId") Long userId){
+//    @GetMapping("/profile/{id}")
+//    public ResponseEntity<GetProfileResponseDto> getProfile(@PathVariable(value = "id") Long userId){
 //        return ResponseEntity.ok(profileService.getUserById(userId));
 //    }
+
+    @PutMapping("/profile/{id}")
+    public ResponseEntity<UpdateProfileResponseDto> updateProfile(@PathVariable(value = "id") Long id, @RequestBody UpdateProfileRequestDto updateProfileRequestDto){
+        return ResponseEntity.ok(profileService.updateProfile(id, updateProfileRequestDto));
+    }
 }
