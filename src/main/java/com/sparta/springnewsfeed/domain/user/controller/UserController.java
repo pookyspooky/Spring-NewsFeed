@@ -1,10 +1,7 @@
 package com.sparta.springnewsfeed.domain.user.controller;
 
-import com.sparta.springnewsfeed.domain.user.dto.LoginResponseDto;
+import com.sparta.springnewsfeed.domain.user.dto.*;
 import com.sparta.springnewsfeed.domain.user.service.UserService;
-import com.sparta.springnewsfeed.domain.user.dto.LoginRequestDto;
-import com.sparta.springnewsfeed.domain.user.dto.UserRequestDto;
-import com.sparta.springnewsfeed.domain.user.dto.UserResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +27,10 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id,@RequestBody LoginRequestDto logInRequest) {
         return ResponseEntity.ok(userService.delete(id,logInRequest));
+    }
+
+    @PutMapping("/change/password/{id}")
+    public String changePassword(@PathVariable Long id, @RequestBody ChangePasswordRequestDto passwordRequest) {
+        return userService.changePassword(id, passwordRequest);
     }
 }
