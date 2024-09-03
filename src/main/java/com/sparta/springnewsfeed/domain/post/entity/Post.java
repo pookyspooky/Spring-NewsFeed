@@ -23,9 +23,9 @@ public class Post extends Timestamped {
     @Column(nullable = false)
     private String content;
 
-//    @ManyToOne(fetch = FetchType.LAZY)            // 필터 구현하고 나서 주석 해제
-//    @JoinColumn(name = "user_id")
-//    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)            // 필터 구현하고 나서 주석 해제
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @OneToMany(mappedBy = "post")
     private List<Comment> commentList = new ArrayList<>();
@@ -43,7 +43,7 @@ public class Post extends Timestamped {
         this.content = content;
     }
 
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
