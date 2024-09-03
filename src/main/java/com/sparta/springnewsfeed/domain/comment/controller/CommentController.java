@@ -26,7 +26,6 @@ public class CommentController {
     @PutMapping("/comments/{commentId}")
     public ResponseEntity<CommentResponseDto> updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto requestDto, HttpServletRequest request){
         Long userId = (Long) request.getAttribute("userId");
-//        CommentResponseDto updateComment = commentService.updateComment(commentId, requestDto, userId);
         return ResponseEntity.ok(commentService.updateComment(commentId, requestDto, userId));
     }
 
@@ -34,7 +33,6 @@ public class CommentController {
     @DeleteMapping("/comments/{commentId}")
     public ResponseEntity<Long> deleteComment(@PathVariable Long commentId, HttpServletRequest request){
         Long userId = (Long) request.getAttribute("userId");
-//        Long deleteComment = commentService.deleteComment(commentId, userId);
         return ResponseEntity.ok(commentService.deleteComment(commentId, userId));
     }
 }
