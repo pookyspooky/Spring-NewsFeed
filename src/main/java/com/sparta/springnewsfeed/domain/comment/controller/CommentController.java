@@ -15,9 +15,9 @@ public class CommentController {
     private final CommentService commentService;
 
     // 댓글 작성
-    @PostMapping("/posts/{postId}/comments")
-    public ResponseEntity<CommentResponseDto> saveComment(@PathVariable Long postId, @RequestBody CommentRequestDto requestDto){
-        return ResponseEntity.ok(commentService.saveComment(postId, requestDto));
+    @PostMapping("user/{userId}/posts/{postId}/comments")
+    public ResponseEntity<CommentResponseDto> saveComment(@PathVariable Long postId, @PathVariable Long userId, @RequestBody CommentRequestDto requestDto){
+        return ResponseEntity.ok(commentService.saveComment(postId, userId, requestDto));
     }
 
     // 댓글 수정
