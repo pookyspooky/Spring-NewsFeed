@@ -58,4 +58,12 @@ public class PostService {
         Post updatePost = postRepository.save(post);
         return PostResponseDto.fromEntity(updatePost);
     }
+
+    public Long deletePost(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException(POST_ERROR_MESSAGE));
+
+        postRepository.delete(post);
+        return id;
+    }
 }

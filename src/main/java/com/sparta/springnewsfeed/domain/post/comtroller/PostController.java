@@ -70,4 +70,10 @@ public class PostController {
         PostResponseDto updatePost = postService.updatePost(id, requestDto);
         return ResponseEntity.ok(updatePost);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Long> deletePost(@PathVariable Long id){
+        Long deletePostId = postService.deletePost(id);
+        return ResponseEntity.ok(deletePostId);
+    }
 }
