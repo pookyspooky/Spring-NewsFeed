@@ -17,8 +17,8 @@ public class Follow {
 
     // 본인
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "follower_id")
+    private User follower;
 
     // 팔로잉 대상자
     @ManyToOne
@@ -30,15 +30,15 @@ public class Follow {
     private CheckingAccepted accepted;
 
 
-    public Follow(User userId, User followingId, CheckingAccepted checkingAccepted) {
-        this.user = userId;
+    public Follow(User followerId, User followingId, CheckingAccepted checkingAccepted) {
+        this.follower = followerId;
         this.following = followingId;
         this.accepted = checkingAccepted;
     }
 
     // 팔로잉 요청
-    public static Follow followingRequest(User userId, User followingId, CheckingAccepted checkingAccepted) {
-        return new Follow(userId, followingId, checkingAccepted);
+    public static Follow followingRequest(User followerId, User followingId, CheckingAccepted checkingAccepted) {
+        return new Follow(followerId, followingId, checkingAccepted);
     }
 
     public void update(CheckingAccepted checkingAccepted) {
