@@ -71,6 +71,11 @@ public class PostController {
         return ResponseEntity.ok(updatePost);
     }
 
+    /**
+     * 게시물 삭제(유저 확인 작업 추가필요)
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> deletePost(@PathVariable Long id){
         Long deletePostId = postService.deletePost(id);
