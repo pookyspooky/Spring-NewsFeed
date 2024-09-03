@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PostService {
     private static final String USER_ERROR_MESSAGE = "유저를 찾을 수 없습니다.";
+    private static final String POST_ERROR_MESSAGE = "일정을 찾을 수 없습니다.";
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
@@ -32,9 +33,16 @@ public class PostService {
         Post savePost = postRepository.save(post);
         return PostResponseDto.fromEntity(savePost);
     }
-
+    @Transactional(readOnly = true)
     public Page<PostResponseListDto> getPostList(Pageable pageable) {
         Page<Post> postPage = postRepository.findAllByOrderByModifiedAtDesc(pageable);
         return postPage.map(PostResponseListDto::fromEntity);
+    }
+    @Transactional(readOnly = true)
+    public PostResponseDto getPost(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException(POST_ERROR_MESSAGE));
+
+        return PostResponseDto.fromEntity(post);
     }
 }

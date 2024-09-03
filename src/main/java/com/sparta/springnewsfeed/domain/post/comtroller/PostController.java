@@ -34,6 +34,12 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createPost);
     }
 
+    /**
+     * 게시물 조회(페이징 적용)
+     * @param page
+     * @param size
+     * @return 상태 코드 200, 게시물 정보들
+     */
     @GetMapping
     public ResponseEntity<PagedResponseDto<PostResponseListDto>> getPostList(@RequestParam(defaultValue = "0")int page,
                                                                  @RequestParam(defaultValue = "10")int size){
@@ -41,4 +47,11 @@ public class PostController {
         Page<PostResponseListDto> postPage = postService.getPostList(pageable);
         return ResponseEntity.ok(new PagedResponseDto<>(postPage));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PostResponseDto> getPost(@PathVariable Long id){
+        PostResponseDto post = postService.getPost(id);
+        return ResponseEntity.ok(post);
+    }
+
 }

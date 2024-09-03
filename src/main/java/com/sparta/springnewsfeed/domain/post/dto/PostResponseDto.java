@@ -2,10 +2,13 @@ package com.sparta.springnewsfeed.domain.post.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sparta.springnewsfeed.domain.comment.entity.Comment;
 import com.sparta.springnewsfeed.domain.post.entity.Post;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 @Setter
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class PostResponseDto {
@@ -16,6 +19,7 @@ public class PostResponseDto {
     private LocalDateTime created_at;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modified_at;
+//    private List<Comment> commentList;    // 댓글과 연동
 
     public static PostResponseDto fromEntity(Post post){
         PostResponseDto dto = new PostResponseDto();
