@@ -4,10 +4,15 @@ import com.sparta.springnewsfeed.domain.user.entity.Timestamped;
 import com.sparta.springnewsfeed.domain.user.entity.User;
 import com.sparta.springnewsfeed.domain.post.entity.Post;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "comments")
+@Getter
+@Table(name = "comment")
+@NoArgsConstructor
 public class Comment extends Timestamped {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,4 +27,13 @@ public class Comment extends Timestamped {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
+
+    public Comment(String comment, Post post) {
+        this.comment = comment;
+        this.post = post;
+    }
+
+    public void update(String comment) {
+        this.comment = comment;
+    }
 }
