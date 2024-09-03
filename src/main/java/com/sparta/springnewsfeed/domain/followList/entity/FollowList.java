@@ -1,11 +1,11 @@
-package com.sparta.springnewsfeed.domain.friendList.entity;
+package com.sparta.springnewsfeed.domain.followList.entity;
 
 import com.sparta.springnewsfeed.domain.user.entity.User;
 import jakarta.persistence.*;
 
 @Entity
 @Table()
-public class FriendList {
+public class FollowList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
