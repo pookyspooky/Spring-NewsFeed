@@ -45,7 +45,7 @@ public class UserService {
         String email = logInRequest.getEmail();
         String password = logInRequest.getPassword();
         User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        if (!user.getPassword().equals(password)) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("Wrong Password");
         }
         String token = jwtUtil.createToken(user.getId());
@@ -59,7 +59,7 @@ public class UserService {
         String password = logInRequest.getPassword();
 
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        if(!user.getPassword().equals(password) || !user.getEmail().equals(email)) {
+        if(!passwordEncoder.matches(password, user.getPassword()) || !user.getEmail().equals(email)) {
             throw new IllegalArgumentException("유저 정보가 일치 하지 않습니다.");
         }
         userRepository.deleteById(id);
@@ -68,7 +68,7 @@ public class UserService {
 
     public String changePassword(Long id, ChangePasswordRequestDto passwordRequest) {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        if(!user.getPassword().equals(passwordRequest.getOldPassword())) {
+        if(!passwordEncoder.matches(passwordRequest.getOldPassword(), user.getPassword())) {
             throw new IllegalArgumentException("현제 비밀번호가 일치하지않습니다.");
         }
         String password = passwordEncoder.encode(passwordRequest.getNewPassword());
