@@ -1,5 +1,6 @@
 package com.sparta.springnewsfeed.domain.follow.controller;
 
+import com.sparta.springnewsfeed.domain.follow.dto.response.FollowerResponseDto;
 import com.sparta.springnewsfeed.domain.follow.dto.response.FollowingResponseDto;
 import com.sparta.springnewsfeed.domain.follow.service.FollowService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,14 +27,14 @@ public class FollowController {
 
     // 팔로우 신청 목록 조회
     @GetMapping("/follow/request/followerList")
-    public ResponseEntity<List<FollowingResponseDto>> getRequestedFollowerList(HttpServletRequest request) {
+    public ResponseEntity<List<FollowerResponseDto>> getRequestedFollowerList(HttpServletRequest request) {
         long userId = (long) request.getAttribute("userId");
         return ResponseEntity.ok(followService.getRequestedFollowerList(userId));
     }
 
     // 팔로워 목록 조회
     @GetMapping("/follow/followerList")
-    public ResponseEntity<List<FollowingResponseDto>> getFollowerList(HttpServletRequest request) {
+    public ResponseEntity<List<FollowerResponseDto>> getFollowerList(HttpServletRequest request) {
         long userId = (long) request.getAttribute("userId");
         return ResponseEntity.ok(followService.getFollowerList(userId));
     }

@@ -15,7 +15,7 @@ public class Follow {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    // 본인
+    // 팔로워 요청자
     @ManyToOne
     @JoinColumn(name = "follower_id")
     private User follower;
@@ -41,6 +41,7 @@ public class Follow {
         return new Follow(followerId, followingId, checkingAccepted);
     }
 
+    // 팔로우 수락
     public void update(CheckingAccepted checkingAccepted) {
         this.accepted = checkingAccepted;
     }

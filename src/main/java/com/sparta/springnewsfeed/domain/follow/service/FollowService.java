@@ -1,5 +1,6 @@
 package com.sparta.springnewsfeed.domain.follow.service;
 
+import com.sparta.springnewsfeed.domain.follow.dto.response.FollowerResponseDto;
 import com.sparta.springnewsfeed.domain.follow.dto.response.FollowingResponseDto;
 import com.sparta.springnewsfeed.domain.follow.entity.Follow;
 import com.sparta.springnewsfeed.domain.follow.repository.FollowRepository;
@@ -26,6 +27,11 @@ public class FollowService {
     // 팔로우 신청
     @Transactional
     public FollowingResponseDto followingRequest(long userId, long followingId) {
+
+        // 로그인 유저가 본인을 팔로우 요청시 예외 처리
+        if (userId == followingId) {
+            throw new IllegalArgumentException("잘못된 요청입니다. (본인 팔로우 요청)");
+        }
         // 팔로우 신청자 존재 확인
         User followerUser = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("등록된 사용자가 없습니다."));
         // 팔로우 대상자 존재 확인
@@ -47,19 +53,19 @@ public class FollowService {
     }
 
     // 팔로우 신청 목록 조회
-    public List<FollowingResponseDto> getRequestedFollowerList(long userId) {
+    public List<FollowerResponseDto> getRequestedFollowerList(long userId) {
         // userId 를 팔로잉하는 유저듣 중 수락 대기중인 유저들 리스트
         List<Follow> requestFollowerList = followRepository.findAllByFollowing_IdAndAccepted(userId, NOT_YET);
 
-        return requestFollowerList.stream().map(FollowingResponseDto::new).toList();
+        return requestFollowerList.stream().map(FollowerResponseDto::new).toList();
     }
 
     // 팔로워 목록 조회
-    public List<FollowingResponseDto> getFollowerList(long userId) {
+    public List<FollowerResponseDto> getFollowerList(long userId) {
         // userId 를 팔로잉하는 유저듣 중 수락된 유저들 리스트
         List<Follow> requestFollowerList = followRepository.findAllByFollowing_IdAndAccepted(userId, ACCEPTED);
 
-        return requestFollowerList.stream().map(FollowingResponseDto::new).toList();
+        return requestFollowerList.stream().map(FollowerResponseDto::new).toList();
     }
 
     // 팔로잉 목록 조회
