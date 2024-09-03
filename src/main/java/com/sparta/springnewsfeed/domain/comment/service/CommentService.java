@@ -38,19 +38,28 @@ public class CommentService {
 
     // 댓글 수정
     @Transactional
-    public CommentResponseDto updateComment(Long commentId, CommentRequestDto requestDto) {
+    public CommentResponseDto updateComment(Long commentId, CommentRequestDto requestDto, Long userId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("찾을 수 없습니다."));
 
-        comment.update(
-                requestDto.getComment()
-        );
+        if (!comment.getUser().getId().equals(userId))
+            throw new IllegalArgumentException("권한이 없습니다.");
+
+        comment.update(requestDto.getComment());
+
+        commentRepository.save(comment);
+
         return CommentResponseDto.entityToDto(comment);
     }
 
     // 댓글 삭제
     @Transactional
-    public void deleteComment(Long commentId) {
+    public Long deleteComment(Long commentId, Long userId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("찾을 수 없습니다."));
+
+        if (!comment.getUser().getId().equals(userId))
+            throw new IllegalArgumentException("권한이 없습니다.");
+
         commentRepository.delete(comment);
+        return commentId;
     }
 }
