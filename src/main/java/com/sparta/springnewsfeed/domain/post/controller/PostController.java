@@ -1,11 +1,10 @@
-package com.sparta.springnewsfeed.domain.post.comtroller;
+package com.sparta.springnewsfeed.domain.post.controller;
 
 import com.sparta.springnewsfeed.domain.post.dto.PagedResponseDto;
 import com.sparta.springnewsfeed.domain.post.dto.PostRequestDto;
 import com.sparta.springnewsfeed.domain.post.dto.PostResponseDto;
 import com.sparta.springnewsfeed.domain.post.dto.PostResponseListDto;
 import com.sparta.springnewsfeed.domain.post.service.PostService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -58,12 +57,14 @@ public class PostController {
         PostResponseDto post = postService.getPost(id);
         return ResponseEntity.ok(post);
     }
+    
+    // 뉴스피드 게시물 조회 추가 필요
 
     /**
      * 게시물 수정(유저 확인 작업 추가필요)
      * @param id
      * @param requestDto
-     * @return
+     * @return  상태 코드 200, 업데이트된 게시물 정보
      */
     @PutMapping("/{id}")
     public ResponseEntity<PostResponseDto> updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto){
@@ -74,7 +75,7 @@ public class PostController {
     /**
      * 게시물 삭제(유저 확인 작업 추가필요)
      * @param id
-     * @return
+     * @return  상태 코드 200, 삭제된 게시물 아이디
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> deletePost(@PathVariable Long id){
