@@ -16,4 +16,11 @@ public class PostRequestDto {
         post.setContent(this.content);
         return post;
     }
+
+    public boolean hasTitle(){
+        return title != null;
+    }
+    public boolean hasContent(){
+        return content != null;
+    }
 }

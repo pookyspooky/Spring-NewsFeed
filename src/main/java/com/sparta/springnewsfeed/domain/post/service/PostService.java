@@ -45,4 +45,17 @@ public class PostService {
 
         return PostResponseDto.fromEntity(post);
     }
+
+    public PostResponseDto updatePost(Long id, PostRequestDto requestDto) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException(POST_ERROR_MESSAGE));
+
+        if (requestDto.hasTitle())
+            post.setTitle(requestDto.getTitle());
+        if (requestDto.hasContent())
+            post.setContent(requestDto.getContent());
+
+        Post updatePost = postRepository.save(post);
+        return PostResponseDto.fromEntity(updatePost);
+    }
 }

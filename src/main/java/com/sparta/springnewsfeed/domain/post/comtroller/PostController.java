@@ -22,7 +22,7 @@ public class PostController {
     private final PostService postService;
 
     /**
-     * 게시물 생성
+     * 게시물 생성(유저 정보 추가 필요)
      * @param requestDto
 //     * @param request
      * @return 상태 코드 201, 생성된 게시물 정보
@@ -48,10 +48,26 @@ public class PostController {
         return ResponseEntity.ok(new PagedResponseDto<>(postPage));
     }
 
+    /**
+     * 특정 게시물 조회
+     * @param id
+     * @return 상태 코드 200, 게시물 정보
+     */
     @GetMapping("/{id}")
     public ResponseEntity<PostResponseDto> getPost(@PathVariable Long id){
         PostResponseDto post = postService.getPost(id);
         return ResponseEntity.ok(post);
     }
 
+    /**
+     * 게시물 수정(유저 확인 작업 추가필요)
+     * @param id
+     * @param requestDto
+     * @return
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<PostResponseDto> updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto){
+        PostResponseDto updatePost = postService.updatePost(id, requestDto);
+        return ResponseEntity.ok(updatePost);
+    }
 }
