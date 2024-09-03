@@ -1,6 +1,7 @@
 package com.sparta.springnewsfeed.domain.profile.entity;
 
 import com.sparta.springnewsfeed.domain.profile.dto.request.CreateProfileRequestDto;
+import com.sparta.springnewsfeed.domain.profile.dto.request.UpdateProfileRequestDto;
 import com.sparta.springnewsfeed.domain.user.entity.Timestamped;
 import com.sparta.springnewsfeed.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -27,5 +28,9 @@ public class Profile extends Timestamped {
     public Profile(CreateProfileRequestDto createProfileRequestDto, User user) {
         this.description = createProfileRequestDto.getDescription();
         this.user = user;
+    }
+
+    public void updateProfile(UpdateProfileRequestDto updateProfileRequestDto) {
+        this.description = updateProfileRequestDto.getDescription();
     }
 }
