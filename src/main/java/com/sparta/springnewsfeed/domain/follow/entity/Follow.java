@@ -1,5 +1,6 @@
 package com.sparta.springnewsfeed.domain.follow.entity;
 
+import com.sparta.springnewsfeed.domain.follow.service.CheckingAccepted;
 import com.sparta.springnewsfeed.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,21 +26,22 @@ public class Follow {
     private User following;
 
     // 승인 여부
-    private String accepted;
+    @Enumerated(EnumType.STRING)
+    private CheckingAccepted accepted;
 
 
-    public Follow(User userId, User followingId, String checkingAccepted) {
+    public Follow(User userId, User followingId, CheckingAccepted checkingAccepted) {
         this.user = userId;
         this.following = followingId;
         this.accepted = checkingAccepted;
     }
 
     // 팔로잉 요청
-    public static Follow followingRequest(User userId, User followingId, String checkingAccepted) {
+    public static Follow followingRequest(User userId, User followingId, CheckingAccepted checkingAccepted) {
         return new Follow(userId, followingId, checkingAccepted);
     }
 
-    public void update(String checkingAccepted) {
+    public void update(CheckingAccepted checkingAccepted) {
         this.accepted = checkingAccepted;
     }
 

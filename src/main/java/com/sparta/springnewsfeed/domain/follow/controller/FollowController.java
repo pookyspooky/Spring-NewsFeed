@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -20,10 +22,10 @@ public class FollowController {
     }
 
     // 팔로우 신청 목록 조회
-//    @GetMapping("/follow/request/followerList/{userId}")
-//    public ResponseEntity<FollowingResponseDto> getRequestedFollowerList(@PathVariable long userId) {
-//        return ResponseEntity.ok(followListService.getRequestedFollowerList(userId));
-//    }
+    @GetMapping("/follow/request/followerList/{userId}")
+    public ResponseEntity<List<FollowingResponseDto>> getRequestedFollower(@PathVariable long userId) {
+        return ResponseEntity.ok(followService.getRequestedFollowerList(userId));
+    }
 
     // 팔로워 목록 조회
 

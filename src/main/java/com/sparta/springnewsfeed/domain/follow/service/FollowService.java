@@ -9,7 +9,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+
+import static com.sparta.springnewsfeed.domain.follow.service.CheckingAccepted.NOT_YET;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +20,7 @@ public class FollowService {
 
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
+
 
     // 팔로우 신청
     @Transactional
@@ -33,7 +37,7 @@ public class FollowService {
             throw new IllegalArgumentException("이미 처리된 요청입니다.");
         } else {
             // DB 저장
-            Follow follow = Follow.followingRequest(user, followigUser, String.valueOf(CheckingAccepted.NOT_YET));
+            Follow follow = Follow.followingRequest(user, followigUser, CheckingAccepted.NOT_YET);
             followRepository.save(follow);
             // Entity -> response
             return new FollowingResponseDto(follow);
@@ -42,16 +46,13 @@ public class FollowService {
     }
 
     // 팔로우 신청 목록 조회
-//    @Transactional
-//    public FollowingResponseDto getRequestedFollowerList(long userId) {
-//        // userId 를 팔로잉하는 유저듣 중 수락 대기중인 유저들 리스트
-//        List<FollowList> requestFollowerList = followListRepository.findAllByFollowing_IdAndAccepted(userId, CheckingAccepted.NOT_YET);
-//
-//        for (FollowList requestFollower : requestFollowerList) {
-//
-//        }
-//
-//    }
+    @Transactional
+    public List<FollowingResponseDto> getRequestedFollowerList(long userId) {
+        // userId 를 팔로잉하는 유저듣 중 수락 대기중인 유저들 리스트
+        List<Follow> requestFollowerList = followRepository.findAllByFollowing_IdAndAccepted(userId, NOT_YET.toString());
+
+        return requestFollowerList.stream().map(FollowingResponseDto::new).toList();
+    }
 
 
     // 팔로우 신청 승인
@@ -60,11 +61,8 @@ public class FollowService {
         // 중복 팔로우 요청 확인
         Follow checkingRequest = followRepository.findById(followId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 요청입니다."));
 
-        if (checkingRequest.getAccepted().equals("ACCEPTED")) {
-            throw new IllegalArgumentException("이미 처리된 요청입니다.");
-        }
         // DB 저장
-        checkingRequest.update(String.valueOf(CheckingAccepted.ACCEPTED));
+        checkingRequest.update(CheckingAccepted.ACCEPTED);
         // Entity -> response
         return new FollowingResponseDto(checkingRequest);
     }
