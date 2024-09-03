@@ -39,9 +39,9 @@ public class User extends Timestamped{
     @OneToMany(mappedBy = "user")
     private List<FollowList> followListList;
 
-    public User(UserRequestDto userRequest){
+    public User(UserRequestDto userRequest, String password){
         this.username = userRequest.getUsername();
         this.email = userRequest.getEmail();
-        this.password = userRequest.getPassword();
+        this.password = password;
     }
 }
