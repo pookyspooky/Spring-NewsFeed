@@ -30,8 +30,8 @@ public class User extends Timestamped{
     @OneToOne(mappedBy = "user")
     private Profile profile;
 
-    @OneToMany(mappedBy = "user")
-    private List<Post> postList = new ArrayList<>();
+//    @OneToMany(mappedBy = "user")
+//    private List<Post> postList = new ArrayList<>();      // 필터 구현해 주석 해제
 
     @OneToMany(mappedBy = "user")
     private List<Comment> commentList = new ArrayList<>();
