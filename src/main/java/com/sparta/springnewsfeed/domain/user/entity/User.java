@@ -36,8 +36,11 @@ public class User extends Timestamped{
     @OneToMany(mappedBy = "user")
     private List<Comment> commentList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<Follow> followList;
+    @OneToMany(mappedBy = "follower")
+    private List<Follow> followers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "following")
+    private List<Follow> followings = new ArrayList<>();
 
     public User(UserRequestDto userRequest, String password){
         this.username = userRequest.getUsername();
