@@ -9,7 +9,6 @@ import com.sparta.springnewsfeed.domain.comment.dto.CommentResponseDto;
 import com.sparta.springnewsfeed.domain.comment.entity.Comment;
 import com.sparta.springnewsfeed.domain.comment.repository.CommentRepository;
 import com.sparta.springnewsfeed.domain.likes.entity.CommentLikes;
-import com.sparta.springnewsfeed.domain.likes.entity.Likes;
 import com.sparta.springnewsfeed.domain.likes.repository.CommentLikesRepository;
 import com.sparta.springnewsfeed.domain.post.entity.Post;
 import com.sparta.springnewsfeed.domain.post.repository.PostRepository;
@@ -42,8 +41,8 @@ public class CommentService {
         );
         Comment savedComment = commentRepository.save(comment);
 
-        // 알람 저장
         // 댓글 작성자와 게시물 작성자가 일치하면 알람 저장 X
+        // 알람 저장
         if (!user.getId().equals(post.getUser().getId())) {
             Alarm alarm = Alarm.CommentAlarm(user, post.getUser(), post.getTitle());
             alarmRepository.save(alarm);
