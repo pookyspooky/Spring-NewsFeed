@@ -39,12 +39,16 @@ public class Alarm extends Timestamped {
         this.alarmContent = alarmContent;
     }
 
-    public static Alarm followingRequestAlarm(User followerUser, User followigUser) {
-        return new Alarm(followerUser, followigUser,followerUser.getUsername()+"님이 팔로우 신청을 보냈습니다.");
+    public static Alarm followingRequestAlarm(User alarmSender, User alarmReceiver) {
+        return new Alarm(alarmSender, alarmReceiver,alarmSender.getUsername()+"님이 팔로우 신청을 보냈습니다.");
     }
 
 
-    public static Alarm followingAcceptedAlarm(User followigUser, User followerUser) {
-        return new Alarm(followigUser, followerUser,followigUser.getUsername()+"님이 팔로우 신청을 수락했습니다.");
+    public static Alarm followingAcceptedAlarm(User alarmSender, User alarmReceiver) {
+        return new Alarm(alarmSender, alarmReceiver,alarmSender.getUsername()+"님이 팔로우 신청을 수락했습니다.");
+    }
+
+    public static Alarm CommentAlarm(User alarmSender, User alarmReceiver, String postTitle) {
+        return new Alarm(alarmSender, alarmReceiver,alarmSender.getUsername()+"님이 <"+postTitle+"> 글에 댓글을 달았습니다.");
     }
 }
