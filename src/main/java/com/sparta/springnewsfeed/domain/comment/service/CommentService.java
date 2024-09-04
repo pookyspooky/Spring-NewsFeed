@@ -6,6 +6,8 @@ import com.sparta.springnewsfeed.domain.comment.entity.Comment;
 import com.sparta.springnewsfeed.domain.comment.repository.CommentRepository;
 import com.sparta.springnewsfeed.domain.post.entity.Post;
 import com.sparta.springnewsfeed.domain.post.repository.PostRepository;
+import com.sparta.springnewsfeed.domain.user.entity.User;
+import com.sparta.springnewsfeed.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,14 +19,17 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     // 댓글 작성
     @Transactional
-    public CommentResponseDto saveComment(Long postId, CommentRequestDto requestDto) {
+    public CommentResponseDto saveComment(Long postId, Long userId, CommentRequestDto requestDto) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("찾을 수 없습니다."));
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("찾을 수 없습니다."));
         Comment comment = new Comment(
             requestDto.getComment(),
-            post
+            post,
+            user
         );
         Comment savedComment = commentRepository.save(comment);
 
@@ -33,19 +38,28 @@ public class CommentService {
 
     // 댓글 수정
     @Transactional
-    public CommentResponseDto updateComment(Long commentId, CommentRequestDto requestDto) {
+    public CommentResponseDto updateComment(Long commentId, CommentRequestDto requestDto, Long userId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("찾을 수 없습니다."));
 
-        comment.update(
-                requestDto.getComment()
-        );
+        if (!comment.getUser().getId().equals(userId))
+            throw new IllegalArgumentException("권한이 없습니다.");
+
+        comment.update(requestDto.getComment());
+
+        commentRepository.save(comment);
+
         return CommentResponseDto.entityToDto(comment);
     }
 
     // 댓글 삭제
     @Transactional
-    public void deleteComment(Long commentId) {
+    public Long deleteComment(Long commentId, Long userId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("찾을 수 없습니다."));
+
+        if (!comment.getUser().getId().equals(userId))
+            throw new IllegalArgumentException("권한이 없습니다.");
+
         commentRepository.delete(comment);
+        return commentId;
     }
 }
