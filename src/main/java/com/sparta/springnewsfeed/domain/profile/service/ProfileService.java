@@ -3,6 +3,7 @@ package com.sparta.springnewsfeed.domain.profile.service;
 import com.sparta.springnewsfeed.domain.profile.dto.request.CreateProfileRequestDto;
 import com.sparta.springnewsfeed.domain.profile.dto.request.UpdateProfileRequestDto;
 import com.sparta.springnewsfeed.domain.profile.dto.response.CreateProfileResponseDto;
+import com.sparta.springnewsfeed.domain.profile.dto.response.GetProfileResponseDto;
 import com.sparta.springnewsfeed.domain.profile.dto.response.UpdateProfileResponseDto;
 import com.sparta.springnewsfeed.domain.profile.entity.Profile;
 import com.sparta.springnewsfeed.domain.profile.repository.ProfileRepository;
@@ -60,5 +61,12 @@ public class ProfileService {
            throw new IllegalArgumentException("프로필 업데이트 중 문제가 발생했습니다.", e);
        }
 
+    }
+
+    public GetProfileResponseDto getProfileById(Long profileId) {
+        Profile profile = profileRepository.findById(profileId)
+                .orElseThrow(()-> new IllegalArgumentException("선택한 프로필이 없습니다."));
+
+        return new GetProfileResponseDto(profile);
     }
 }
