@@ -7,7 +7,6 @@ import com.sparta.springnewsfeed.domain.comment.dto.CommentResponseDto;
 import com.sparta.springnewsfeed.domain.comment.entity.Comment;
 import com.sparta.springnewsfeed.domain.comment.repository.CommentRepository;
 import com.sparta.springnewsfeed.domain.likes.entity.CommentLikes;
-import com.sparta.springnewsfeed.domain.likes.entity.Likes;
 import com.sparta.springnewsfeed.domain.likes.repository.CommentLikesRepository;
 import com.sparta.springnewsfeed.domain.post.entity.Post;
 import com.sparta.springnewsfeed.domain.post.repository.PostRepository;

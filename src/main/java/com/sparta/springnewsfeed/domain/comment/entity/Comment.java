@@ -1,10 +1,9 @@
 package com.sparta.springnewsfeed.domain.comment.entity;
 
 import com.sparta.springnewsfeed.domain.likes.entity.CommentLikes;
-import com.sparta.springnewsfeed.domain.likes.entity.Likes;
-import com.sparta.springnewsfeed.global.entity.Timestamped;
-import com.sparta.springnewsfeed.domain.user.entity.User;
 import com.sparta.springnewsfeed.domain.post.entity.Post;
+import com.sparta.springnewsfeed.domain.user.entity.User;
+import com.sparta.springnewsfeed.global.entity.Timestamped;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
