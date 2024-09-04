@@ -9,6 +9,7 @@ import com.sparta.springnewsfeed.domain.profile.entity.Profile;
 import com.sparta.springnewsfeed.domain.profile.repository.ProfileRepository;
 import com.sparta.springnewsfeed.domain.user.entity.User;
 import com.sparta.springnewsfeed.domain.user.repository.UserRepository;
+import com.sparta.springnewsfeed.global.exception.UnauthorizedAccessException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,12 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ProfileService {
 
+    private static final String UNAUTHORIZED_ERROR_MESSAGE = "권한이 없습니다.";
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
 
-    public CreateProfileResponseDto createProfile(Long proileId, CreateProfileRequestDto createProfileRequestDto) {
+    // 프로필 등록
+    public CreateProfileResponseDto createProfile(Long userId, CreateProfileRequestDto createProfileRequestDto) {
         // 1. 사용자 조회
-        User user = findeUserById(proileId);
+        User user = findeUserById(userId);
 
         // 2. 이미 프로필이 있는지 확인
         if(user.getProfile() != null){
@@ -45,11 +48,14 @@ public class ProfileService {
                 .orElseThrow(()-> new IllegalArgumentException("선택한 유저가 존재하지 않습니다."));
     }
 
-    public UpdateProfileResponseDto updateProfile(Long id, UpdateProfileRequestDto updateProfileRequestDto) {
+    public UpdateProfileResponseDto updateProfile(Long id, UpdateProfileRequestDto updateProfileRequestDto, Long userId) {
        try{
            // 1. 프로필 확인
            Profile profile = profileRepository.findById(id)
                    .orElseThrow(()-> new IllegalArgumentException("선택한 프로필이 없습니다."));
+
+           if(!profile.getUser().getId().equals(userId))
+               throw new UnauthorizedAccessException(UNAUTHORIZED_ERROR_MESSAGE);
 
            // 2. 프로필 수정
            profile.updateProfile(updateProfileRequestDto);
@@ -65,6 +71,7 @@ public class ProfileService {
 
     }
 
+    @Transactional(readOnly = true)
     public GetProfileResponseDto getProfileById(Long profileId) {
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(()-> new IllegalArgumentException("선택한 프로필이 없습니다."));
