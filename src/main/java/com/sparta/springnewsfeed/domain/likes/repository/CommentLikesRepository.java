@@ -6,5 +6,5 @@ import com.sparta.springnewsfeed.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CommentLikesRepository extends JpaRepository<CommentLikes, Long> {
-    CommentLikes findByUser(User user);
+    CommentLikes findByUserAndComment(User user, Comment comment);
 }
