@@ -11,17 +11,19 @@ import com.sparta.springnewsfeed.domain.user.entity.User;
 import com.sparta.springnewsfeed.domain.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class ProfileService {
 
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
 
-    public CreateProfileResponseDto createProfile(Long id, CreateProfileRequestDto createProfileRequestDto) {
+    public CreateProfileResponseDto createProfile(Long proileId, CreateProfileRequestDto createProfileRequestDto) {
         // 1. 사용자 조회
-        User user = findeUserById(id);
+        User user = findeUserById(proileId);
 
         // 2. 이미 프로필이 있는지 확인
         if(user.getProfile() != null){

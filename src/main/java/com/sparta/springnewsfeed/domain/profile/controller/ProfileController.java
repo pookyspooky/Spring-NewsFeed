@@ -29,7 +29,7 @@ public class ProfileController {
     }
 
     @PutMapping("/profile/{id}")
-    public ResponseEntity<UpdateProfileResponseDto> updateProfile(@PathVariable(value = "id") Long id, @RequestBody UpdateProfileRequestDto updateProfileRequestDto){
-        return ResponseEntity.ok(profileService.updateProfile(id, updateProfileRequestDto));
+    public ResponseEntity<UpdateProfileResponseDto> updateProfile(@PathVariable(value = "id") Long proileId, @RequestBody UpdateProfileRequestDto updateProfileRequestDto){
+        return ResponseEntity.ok(profileService.updateProfile(proileId, updateProfileRequestDto));
     }
 }
