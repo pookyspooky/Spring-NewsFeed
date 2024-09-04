@@ -1,5 +1,7 @@
 package com.sparta.springnewsfeed.domain.post.service;
 
+import com.sparta.springnewsfeed.domain.follow.dto.response.FollowingResponseDto;
+import com.sparta.springnewsfeed.domain.follow.service.FollowService;
 import com.sparta.springnewsfeed.domain.likes.entity.Likes;
 import com.sparta.springnewsfeed.domain.likes.repository.LikesRepository;
 import com.sparta.springnewsfeed.domain.post.command.Command;
@@ -18,6 +20,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -28,7 +33,9 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final LikesRepository likesRepository;
+    private final FollowService followService;
 
+    // 게시물 생성
     public PostResponseDto createPost(PostRequestDto requestDto, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException(USER_ERROR_MESSAGE));
@@ -39,17 +46,34 @@ public class PostService {
         Post savePost = postRepository.save(post);
         return PostResponseDto.fromEntity(savePost);
     }
+    // 게시물 목록 조회
     @Transactional(readOnly = true)
     public Page<PostResponseListDto> getPostList(Pageable pageable) {
         Page<Post> postPage = postRepository.findAllByOrderByModifiedAtDesc(pageable);
         return postPage.map(PostResponseListDto::fromEntity);
     }
+    // 특정 게시물 조회
     @Transactional(readOnly = true)
     public PostResponseDto getPost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException(POST_ERROR_MESSAGE));
 
         return PostResponseDto.fromEntity(post);
+    }
+
+    // 뉴스피드 게시물 조회
+    @Transactional(readOnly = true)
+    public Page<PostResponseListDto> getNewsfeed(Long userId, Pageable pageable) {
+        // 사용자의 팔로잉 목록 가져오기
+        List<FollowingResponseDto> followings = followService.getFollowingList(userId);
+        List<Long> followingIds = followings.stream()
+                .map(FollowingResponseDto::getFollowingId)
+                .collect(Collectors.toList());
+
+        // 팔로잉하는 사용자들의 게시물 조회
+        Page<Post> newsfeedPosts = postRepository.findByUserIdInOrderByModifiedAtDesc(followingIds, pageable);
+
+        return newsfeedPosts.map(PostResponseListDto::fromEntity);
     }
 
     // 게시물 수정

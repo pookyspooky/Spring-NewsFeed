@@ -57,8 +57,23 @@ public class PostController {
         PostResponseDto post = postService.getPost(postId);
         return ResponseEntity.ok(post);
     }
-    
-    // 뉴스피드 게시물 조회 추가 필요
+
+    /**
+     * 뉴스피드 게시물 조회
+     * @param page
+     * @param size
+     * @param authUser
+     * @return 상태 코드 200, 뉴스피드 게시물 정보들
+     */
+    @GetMapping("/newsfeed")
+    public ResponseEntity<PagedResponseDto<PostResponseListDto>> getNewsfeed(@RequestParam(defaultValue = "0")int  page,
+                                                                             @RequestParam(defaultValue = "10")int size,
+                                                                             @Auth AuthUser authUser){
+        Pageable pageable = PageRequest.of(page, size);
+        Long userId = authUser.getId();
+        Page<PostResponseListDto> newsfeedPage = postService.getNewsfeed(userId, pageable);
+        return ResponseEntity.ok(new PagedResponseDto<>(newsfeedPage));
+    }
 
     /**
      * 게시물 수정
