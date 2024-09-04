@@ -124,4 +124,24 @@ public class PostService {
             likeCommand.execute();
         }
     }
+    // 검색 기능
+    @Transactional(readOnly = true)
+    public Page<PostResponseListDto> searchPosts(String keyword, String searchType, Pageable pageable){
+        Page<Post> postPage;
+
+        switch (searchType.toLowerCase()){
+            case "title":
+                postPage = postRepository.findByTitleContainingOrderByModifiedAtDesc(keyword, pageable);
+                break;
+            case "content":
+                postPage = postRepository.findByContentContainingOrderByModifiedAtDesc(keyword, pageable);
+                break;
+            case "both":
+                postPage = postRepository.searchByTitleOrContent(keyword, pageable);
+                break;
+            default:
+                throw new IllegalArgumentException("검색 타입을 찾을 수 없습니다.");
+        }
+        return postPage.map(PostResponseListDto::fromEntity);
+    }
 }

@@ -1,11 +1,10 @@
 package com.sparta.springnewsfeed.domain.post.dto;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sparta.springnewsfeed.domain.comment.dto.CommentResponseDto;
-import com.sparta.springnewsfeed.domain.comment.entity.Comment;
 import com.sparta.springnewsfeed.domain.likes.dto.LikesDto;
 import com.sparta.springnewsfeed.domain.post.entity.Post;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Setter
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@Getter
 public class PostResponseDto {
     private Long id;
     private String title;

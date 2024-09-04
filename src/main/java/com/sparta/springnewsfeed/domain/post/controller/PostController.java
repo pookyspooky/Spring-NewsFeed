@@ -1,10 +1,12 @@
 package com.sparta.springnewsfeed.domain.post.controller;
 
 import com.sparta.springnewsfeed.annotation.Auth;
-import com.sparta.springnewsfeed.domain.post.dto.*;
+import com.sparta.springnewsfeed.domain.post.dto.PagedResponseDto;
+import com.sparta.springnewsfeed.domain.post.dto.PostRequestDto;
+import com.sparta.springnewsfeed.domain.post.dto.PostResponseDto;
+import com.sparta.springnewsfeed.domain.post.dto.PostResponseListDto;
 import com.sparta.springnewsfeed.domain.post.service.PostService;
 import com.sparta.springnewsfeed.domain.user.dto.AuthUser;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -111,5 +113,24 @@ public class PostController {
     public void toggleLikePost(@PathVariable Long postId, @Auth AuthUser authUser){
         Long userId = authUser.getId();
         postService.toggleLikePost(postId, userId);
+    }
+
+    /**
+     * 검색 기능
+     * @param keyword
+     * @param searchType
+     * @param page
+     * @param size
+     * @return 상태 코드 200, 검색 결과 게시물들
+     */
+    @GetMapping("/search")
+    public ResponseEntity<PagedResponseDto<PostResponseListDto>> searchPosts(@RequestParam String keyword,
+                                                                             @RequestParam(defaultValue = "both") String searchType,
+                                                                             @RequestParam(defaultValue = "0")int page,
+                                                                             @RequestParam(defaultValue = "10")int size){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<PostResponseListDto> searchResult = postService.searchPosts(keyword, searchType, pageable);
+
+        return ResponseEntity.ok(new PagedResponseDto<>(searchResult));
     }
 }
