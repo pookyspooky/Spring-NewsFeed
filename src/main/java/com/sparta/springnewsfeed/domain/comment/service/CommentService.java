@@ -70,6 +70,7 @@ public class CommentService {
     }
 
     // 댓글 좋아요
+    @Transactional
     public void toggleLikeComment(Long commentId, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
 
