@@ -27,9 +27,9 @@ public class PostController {
      * @return 상태 코드 201, 생성된 게시물 정보
      */
     @PostMapping
-    public ResponseEntity<PostCreateResponseDto> createPost(@RequestBody PostRequestDto requestDto, @Auth AuthUser authUser){
+    public ResponseEntity<PostResponseDto> createPost(@RequestBody PostRequestDto requestDto, @Auth AuthUser authUser){
         Long userId = authUser.getId();
-        PostCreateResponseDto createPost = postService.createPost(requestDto, userId);
+        PostResponseDto createPost = postService.createPost(requestDto, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(createPost);
     }
 

@@ -4,7 +4,6 @@ import com.sparta.springnewsfeed.domain.likes.entity.Likes;
 import com.sparta.springnewsfeed.domain.likes.repository.LikesRepository;
 import com.sparta.springnewsfeed.domain.post.command.Command;
 import com.sparta.springnewsfeed.domain.post.command.LikePostCommand;
-import com.sparta.springnewsfeed.domain.post.dto.PostCreateResponseDto;
 import com.sparta.springnewsfeed.domain.post.dto.PostRequestDto;
 import com.sparta.springnewsfeed.domain.post.dto.PostResponseDto;
 import com.sparta.springnewsfeed.domain.post.dto.PostResponseListDto;
@@ -13,7 +12,6 @@ import com.sparta.springnewsfeed.domain.post.repository.PostRepository;
 import com.sparta.springnewsfeed.domain.user.entity.User;
 import com.sparta.springnewsfeed.domain.user.repository.UserRepository;
 import com.sparta.springnewsfeed.global.exception.UnauthorizedAccessException;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +29,7 @@ public class PostService {
     private final UserRepository userRepository;
     private final LikesRepository likesRepository;
 
-    public PostCreateResponseDto createPost(PostRequestDto requestDto, Long userId) {
+    public PostResponseDto createPost(PostRequestDto requestDto, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException(USER_ERROR_MESSAGE));
 
@@ -39,7 +37,7 @@ public class PostService {
         post.setUser(user);
 
         Post savePost = postRepository.save(post);
-        return PostCreateResponseDto.fromEntity(savePost);
+        return PostResponseDto.fromEntity(savePost);
     }
     @Transactional(readOnly = true)
     public Page<PostResponseListDto> getPostList(Pageable pageable) {
