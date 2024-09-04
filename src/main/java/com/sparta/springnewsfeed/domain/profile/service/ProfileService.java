@@ -106,6 +106,7 @@ public class ProfileService {
             unlikeCommand.undo();
         }else {
             Command likeCommand = new LikeProfileCommand(profileLikesRepository, user, profile, null);
+            likeCommand.execute();
         }
     }
 }
