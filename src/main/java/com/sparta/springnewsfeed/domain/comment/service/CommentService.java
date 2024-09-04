@@ -1,5 +1,7 @@
 package com.sparta.springnewsfeed.domain.comment.service;
 
+import com.sparta.springnewsfeed.domain.alarm.entity.Alarm;
+import com.sparta.springnewsfeed.domain.alarm.repository.AlarmRepository;
 import com.sparta.springnewsfeed.domain.comment.command.Command;
 import com.sparta.springnewsfeed.domain.comment.command.LikeCommentCommand;
 import com.sparta.springnewsfeed.domain.comment.dto.CommentRequestDto;
@@ -7,7 +9,6 @@ import com.sparta.springnewsfeed.domain.comment.dto.CommentResponseDto;
 import com.sparta.springnewsfeed.domain.comment.entity.Comment;
 import com.sparta.springnewsfeed.domain.comment.repository.CommentRepository;
 import com.sparta.springnewsfeed.domain.likes.entity.CommentLikes;
-import com.sparta.springnewsfeed.domain.likes.entity.Likes;
 import com.sparta.springnewsfeed.domain.likes.repository.CommentLikesRepository;
 import com.sparta.springnewsfeed.domain.post.entity.Post;
 import com.sparta.springnewsfeed.domain.post.repository.PostRepository;
@@ -26,6 +27,7 @@ public class CommentService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final CommentLikesRepository commentLikesRepository;
+    private final AlarmRepository alarmRepository;
 
     // 댓글 작성
     @Transactional
@@ -38,6 +40,13 @@ public class CommentService {
             user
         );
         Comment savedComment = commentRepository.save(comment);
+
+        // 댓글 작성자와 게시물 작성자가 일치하면 알람 저장 X
+        // 알람 저장
+        if (!user.getId().equals(post.getUser().getId())) {
+            Alarm alarm = Alarm.CommentAlarm(user, post.getUser(), post.getTitle());
+            alarmRepository.save(alarm);
+        }
 
         return CommentResponseDto.entityToDto(savedComment);
     }
@@ -77,6 +86,9 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다."));
 
         CommentLikes existingLike = commentLikesRepository.findByUserAndComment(user, comment);
+
+        if (comment.getUser().getId().equals(userId))
+            throw new IllegalArgumentException("본인 댓글에는 좋아요를 누를 수 없습니다.");
 
         if (existingLike != null) {
             Command unlikeCommand = new LikeCommentCommand(commentLikesRepository, user, comment, existingLike);

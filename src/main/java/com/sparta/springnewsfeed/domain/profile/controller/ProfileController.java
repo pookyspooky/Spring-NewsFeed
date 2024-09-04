@@ -39,4 +39,11 @@ public class ProfileController {
         Long userId = authUser.getId();
         return ResponseEntity.ok(profileService.updateProfile(proileId, updateProfileRequestDto, userId));
     }
+
+    //좋아요 기능
+    @PostMapping("/profile/{profileId}/likes")
+    public void toggleLikeProfile(@PathVariable Long profileId, @Auth AuthUser authUser){
+        Long userId = authUser.getId();
+        profileService.toggleLikeProfile(profileId, userId);
+    }
 }
