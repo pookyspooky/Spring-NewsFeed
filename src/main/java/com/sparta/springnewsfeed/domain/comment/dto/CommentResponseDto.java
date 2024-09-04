@@ -15,13 +15,15 @@ public class CommentResponseDto {
     private final String comment;
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
+    private final int likeCount;
 
     public static CommentResponseDto entityToDto(Comment comment) {
         return new CommentResponseDto(
                 comment.getId(),
                 comment.getComment(),
                 comment.getCreatedAt(),
-                comment.getModifiedAt()
+                comment.getModifiedAt(),
+                comment.getLikeCount()
         );
     }
 }
