@@ -1,5 +1,7 @@
 package com.sparta.springnewsfeed.domain.comment.service;
 
+import com.sparta.springnewsfeed.domain.alarm.entity.Alarm;
+import com.sparta.springnewsfeed.domain.alarm.repository.AlarmRepository;
 import com.sparta.springnewsfeed.domain.comment.dto.CommentRequestDto;
 import com.sparta.springnewsfeed.domain.comment.dto.CommentResponseDto;
 import com.sparta.springnewsfeed.domain.comment.entity.Comment;
@@ -20,6 +22,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final AlarmRepository alarmRepository;
 
     // 댓글 작성
     @Transactional
@@ -32,6 +35,13 @@ public class CommentService {
             user
         );
         Comment savedComment = commentRepository.save(comment);
+
+        // 알람 저장
+        // 댓글 작성자와 게시물 작성자가 일치하면 알람 저장 X
+        if (!user.getId().equals(post.getUser().getId())) {
+            Alarm alarm = Alarm.CommentAlarm(user, post.getUser(), post.getTitle());
+            alarmRepository.save(alarm);
+        }
 
         return CommentResponseDto.entityToDto(savedComment);
     }
