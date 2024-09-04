@@ -1,7 +1,10 @@
 package com.sparta.springnewsfeed.domain.profile.controller;
 
 import com.sparta.springnewsfeed.domain.profile.dto.request.CreateProfileRequestDto;
+import com.sparta.springnewsfeed.domain.profile.dto.request.UpdateProfileRequestDto;
 import com.sparta.springnewsfeed.domain.profile.dto.response.CreateProfileResponseDto;
+import com.sparta.springnewsfeed.domain.profile.dto.response.GetProfileResponseDto;
+import com.sparta.springnewsfeed.domain.profile.dto.response.UpdateProfileResponseDto;
 import com.sparta.springnewsfeed.domain.profile.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +22,14 @@ public class ProfileController {
         return ResponseEntity.ok(profileService.createProfile(id, createProfileRequestDto));
     }
 
-//    @GetMapping("/profile/{id}")
-//    public ResponseEntity<GetProfileResponseDto> getProfile(@PathVariable(value = "id") Long userId){
-//        return ResponseEntity.ok(profileService.getUserById(userId));
-//    }
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<GetProfileResponseDto> getProfile(@PathVariable(value = "id") Long profileId){
+        GetProfileResponseDto getProfileResponseDto = profileService.getProfileById(profileId);
+        return ResponseEntity.ok(getProfileResponseDto);
+    }
 
-//    @PutMapping("/profile/{id}")
-//    public ResponseEntity<UpdateProfileResponseDto> updateProfile(@PathVariable(value = "id") Long id, @RequestBody UpdateProfileRequestDto updateProfileRequestDto){
-//        return ResponseEntity.ok(profileService.updateProfile(id, updateProfileRequestDto));
-//    }
+    @PutMapping("/profile/{id}")
+    public ResponseEntity<UpdateProfileResponseDto> updateProfile(@PathVariable(value = "id") Long proileId, @RequestBody UpdateProfileRequestDto updateProfileRequestDto){
+        return ResponseEntity.ok(profileService.updateProfile(proileId, updateProfileRequestDto));
+    }
 }

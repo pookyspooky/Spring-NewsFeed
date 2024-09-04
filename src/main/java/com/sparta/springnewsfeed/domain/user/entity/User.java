@@ -17,7 +17,7 @@ import java.util.List;
 @Getter
 @Table(name ="users")
 @NoArgsConstructor
-public class User extends Timestamped {
+public class User extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="user_id")
@@ -32,7 +32,7 @@ public class User extends Timestamped {
     private Profile profile;
 
     @OneToMany(mappedBy = "user")
-    private List<Post> postList = new ArrayList<>();      // 필터 구현해 주석 해제
+    private List<Post> postList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Comment> commentList = new ArrayList<>();
