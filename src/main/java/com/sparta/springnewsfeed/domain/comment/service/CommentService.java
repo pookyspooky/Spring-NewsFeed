@@ -1,9 +1,14 @@
 package com.sparta.springnewsfeed.domain.comment.service;
 
+import com.sparta.springnewsfeed.domain.comment.command.Command;
+import com.sparta.springnewsfeed.domain.comment.command.LikeCommentCommand;
 import com.sparta.springnewsfeed.domain.comment.dto.CommentRequestDto;
 import com.sparta.springnewsfeed.domain.comment.dto.CommentResponseDto;
 import com.sparta.springnewsfeed.domain.comment.entity.Comment;
 import com.sparta.springnewsfeed.domain.comment.repository.CommentRepository;
+import com.sparta.springnewsfeed.domain.likes.entity.CommentLikes;
+import com.sparta.springnewsfeed.domain.likes.entity.Likes;
+import com.sparta.springnewsfeed.domain.likes.repository.CommentLikesRepository;
 import com.sparta.springnewsfeed.domain.post.entity.Post;
 import com.sparta.springnewsfeed.domain.post.repository.PostRepository;
 import com.sparta.springnewsfeed.domain.user.entity.User;
@@ -20,6 +25,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final CommentLikesRepository commentLikesRepository;
 
     // 댓글 작성
     @Transactional
@@ -61,5 +67,22 @@ public class CommentService {
 
         commentRepository.delete(comment);
         return commentId;
+    }
+
+    // 댓글 좋아요
+    public void toggleLikeComment(Long commentId, Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다."));
+
+        CommentLikes existingLike = commentLikesRepository.findByUser(user);
+
+        if (existingLike != null) {
+            Command unlikeCommand = new LikeCommentCommand(commentLikesRepository, user, comment, existingLike);
+            unlikeCommand.undo();
+        } else {
+            Command likeCommand = new LikeCommentCommand(commentLikesRepository, user, comment, null);
+            likeCommand.execute();
+        }
     }
 }
