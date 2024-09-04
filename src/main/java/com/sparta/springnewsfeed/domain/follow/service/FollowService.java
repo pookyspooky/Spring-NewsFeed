@@ -1,5 +1,8 @@
 package com.sparta.springnewsfeed.domain.follow.service;
 
+
+import com.sparta.springnewsfeed.domain.alarm.entity.Alarm;
+import com.sparta.springnewsfeed.domain.alarm.repository.AlarmRepository;
 import com.sparta.springnewsfeed.domain.follow.dto.response.FollowerResponseDto;
 import com.sparta.springnewsfeed.domain.follow.dto.response.FollowingResponseDto;
 import com.sparta.springnewsfeed.domain.follow.entity.Follow;
@@ -8,6 +11,7 @@ import com.sparta.springnewsfeed.domain.user.entity.User;
 import com.sparta.springnewsfeed.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Schedules;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +26,7 @@ public class FollowService {
 
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
+    private final AlarmRepository alarmRepository;
 
 
     // 팔로우 신청
@@ -46,6 +51,9 @@ public class FollowService {
             // DB 저장
             Follow follow = Follow.followingRequest(followerUser, followigUser, CheckingAccepted.NOT_YET);
             followRepository.save(follow);
+
+            Alarm alarm = Alarm.followingRequestAlarm(followerUser, followigUser);
+            alarmRepository.save(alarm);
             // Entity -> response
             return new FollowingResponseDto(follow);
         }
@@ -79,7 +87,7 @@ public class FollowService {
 
     // 팔로우 신청 승인
     @Transactional
-    public FollowingResponseDto acceptFollowingRequest(long userId, long followId) {
+    public FollowerResponseDto acceptFollowingRequest(long userId, long followId) {
         // 중복 팔로우 요청 확인
         Follow checkingRequest = followRepository.findById(followId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 요청입니다."));
 
@@ -87,8 +95,11 @@ public class FollowService {
         if (checkingRequest.getFollowing().getId().equals(userId)) {
             // DB 저장
             checkingRequest.update(CheckingAccepted.ACCEPTED);
+
+            Alarm alarm = Alarm.followingAcceptedAlarm(checkingRequest.getFollowing(), checkingRequest.getFollower());
+            alarmRepository.save(alarm);
             // Entity -> response
-            return new FollowingResponseDto(checkingRequest);
+            return new FollowerResponseDto(checkingRequest);
         } else {
             throw new IllegalArgumentException("잘못된 접근입니다.");
         }

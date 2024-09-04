@@ -29,13 +29,13 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id,@RequestBody LoginRequestDto logInRequest) {
-        return ResponseEntity.ok(userService.delete(id,logInRequest));
+    public ResponseEntity<String> delete(@PathVariable Long id,@RequestBody LoginRequestDto logInRequest, @Auth AuthUser authUser) {
+        return ResponseEntity.ok(userService.delete(id,logInRequest,authUser));
     }
 
     @PutMapping("/change/password/{id}")
-    public String changePassword(@PathVariable Long id, @RequestBody ChangePasswordRequestDto passwordRequest) {
-        return userService.changePassword(id, passwordRequest);
+    public String changePassword(@PathVariable Long id, @RequestBody ChangePasswordRequestDto passwordRequest,@Auth AuthUser authUser) {
+        return userService.changePassword(id, passwordRequest,authUser);
     }
 
     @GetMapping("/test")

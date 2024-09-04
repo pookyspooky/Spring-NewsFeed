@@ -1,5 +1,6 @@
 package com.sparta.springnewsfeed.domain.user.entity;
 
+import com.sparta.springnewsfeed.domain.alarm.entity.Alarm;
 import com.sparta.springnewsfeed.domain.comment.entity.Comment;
 import com.sparta.springnewsfeed.domain.follow.entity.Follow;
 import com.sparta.springnewsfeed.domain.post.entity.Post;
@@ -37,11 +38,17 @@ public class User extends Timestamped{
     @OneToMany(mappedBy = "user")
     private List<Comment> commentList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "follower")
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.REMOVE)
     private List<Follow> followers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "following")
+    @OneToMany(mappedBy = "following", cascade = CascadeType.REMOVE)
     private List<Follow> followings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "alarmSender", cascade = CascadeType.REMOVE)
+    private List<Alarm> alarmSenders = new ArrayList<>();
+
+    @OneToMany(mappedBy = "alarmReceiver", cascade = CascadeType.REMOVE)
+    private List<Alarm> alarmReceivers = new ArrayList<>();
 
     public User(UserRequestDto userRequest, String password){
         this.username = userRequest.getUsername();
