@@ -5,7 +5,6 @@ import com.sparta.springnewsfeed.domain.comment.dto.CommentRequestDto;
 import com.sparta.springnewsfeed.domain.comment.dto.CommentResponseDto;
 import com.sparta.springnewsfeed.domain.comment.service.CommentService;
 import com.sparta.springnewsfeed.domain.user.dto.AuthUser;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,5 +35,12 @@ public class CommentController {
     public ResponseEntity<Long> deleteComment(@PathVariable Long commentId, @Auth AuthUser authUser){
         Long userId = authUser.getId();
         return ResponseEntity.ok(commentService.deleteComment(commentId, userId));
+    }
+
+    // 댓글 좋아요
+    @PostMapping("/comments/{commentId}/likes")
+    public void toggleLikeComment(@PathVariable Long commentId, @Auth AuthUser authUser){
+        Long userId = authUser.getId();
+        commentService.toggleLikeComment(commentId, userId);
     }
 }
