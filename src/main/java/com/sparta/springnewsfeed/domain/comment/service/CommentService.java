@@ -87,6 +87,9 @@ public class CommentService {
 
         CommentLikes existingLike = commentLikesRepository.findByUserAndComment(user, comment);
 
+        if (comment.getUser().getId().equals(userId))
+            throw new IllegalArgumentException("본인 댓글에는 좋아요를 누를 수 없습니다.");
+
         if (existingLike != null) {
             Command unlikeCommand = new LikeCommentCommand(commentLikesRepository, user, comment, existingLike);
             unlikeCommand.undo();
