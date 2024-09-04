@@ -1,13 +1,16 @@
 package com.sparta.springnewsfeed.domain.user.controller;
 
+import com.sparta.springnewsfeed.annotation.Auth;
 import com.sparta.springnewsfeed.domain.user.dto.*;
 import com.sparta.springnewsfeed.domain.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
@@ -33,5 +36,10 @@ public class UserController {
     @PutMapping("/change/password/{id}")
     public String changePassword(@PathVariable Long id, @RequestBody ChangePasswordRequestDto passwordRequest) {
         return userService.changePassword(id, passwordRequest);
+    }
+
+    @GetMapping("/test")
+    public void test(@Auth AuthUser authUser) {
+        log.info("authUser| userName={} id={} email={}", authUser.getUserName(),authUser.getId(),authUser.getEmail());
     }
 }

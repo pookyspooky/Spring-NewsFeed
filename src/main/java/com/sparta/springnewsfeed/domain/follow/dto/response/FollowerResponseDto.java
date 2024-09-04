@@ -4,18 +4,17 @@ import com.sparta.springnewsfeed.domain.follow.entity.Follow;
 import lombok.Getter;
 
 @Getter
-public class FollowingResponseDto {
+public class FollowerResponseDto {
 
     private long id;
-    private long followingId;
-    private String followingName;
+    private long followerId;
+    private String followerName;
     private String checkingAccepted;
 
-    public FollowingResponseDto(Follow follow) {
+    public FollowerResponseDto(Follow follow) {
         this.id = follow.getId();
-        this.followingId = follow.getFollowing().getId();
-        this.followingName = follow.getFollowing().getUsername();
+        this.followerId = follow.getFollower().getId();
+        this.followerName = follow.getFollower().getUsername();
         this.checkingAccepted = follow.getAccepted().toString();
     }
-
 }

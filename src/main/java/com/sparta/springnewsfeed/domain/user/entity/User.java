@@ -5,6 +5,7 @@ import com.sparta.springnewsfeed.domain.follow.entity.Follow;
 import com.sparta.springnewsfeed.domain.post.entity.Post;
 import com.sparta.springnewsfeed.domain.profile.entity.Profile;
 import com.sparta.springnewsfeed.domain.user.dto.UserRequestDto;
+import com.sparta.springnewsfeed.global.entity.Timestamped;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,8 +37,11 @@ public class User extends Timestamped{
     @OneToMany(mappedBy = "user")
     private List<Comment> commentList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<Follow> followList;
+    @OneToMany(mappedBy = "follower")
+    private List<Follow> followers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "following")
+    private List<Follow> followings = new ArrayList<>();
 
     public User(UserRequestDto userRequest, String password){
         this.username = userRequest.getUsername();
