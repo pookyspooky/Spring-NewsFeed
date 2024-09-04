@@ -1,10 +1,9 @@
 package com.sparta.springnewsfeed.domain.post.controller;
 
-import com.sparta.springnewsfeed.domain.post.dto.PagedResponseDto;
-import com.sparta.springnewsfeed.domain.post.dto.PostRequestDto;
-import com.sparta.springnewsfeed.domain.post.dto.PostResponseDto;
-import com.sparta.springnewsfeed.domain.post.dto.PostResponseListDto;
+import com.sparta.springnewsfeed.annotation.Auth;
+import com.sparta.springnewsfeed.domain.post.dto.*;
 import com.sparta.springnewsfeed.domain.post.service.PostService;
+import com.sparta.springnewsfeed.domain.user.dto.AuthUser;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,13 +23,13 @@ public class PostController {
     /**
      * 게시물 생성
      * @param requestDto
-     * @param request
+     * @param authUser
      * @return 상태 코드 201, 생성된 게시물 정보
      */
     @PostMapping
-    public ResponseEntity<PostResponseDto> createPost(@RequestBody PostRequestDto requestDto, HttpServletRequest request){
-        Long userId = (Long) request.getAttribute("userId");
-        PostResponseDto createPost = postService.createPost(requestDto, userId);
+    public ResponseEntity<PostCreateResponseDto> createPost(@RequestBody PostRequestDto requestDto, @Auth AuthUser authUser){
+        Long userId = authUser.getId();
+        PostCreateResponseDto createPost = postService.createPost(requestDto, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(createPost);
     }
 
@@ -65,12 +64,12 @@ public class PostController {
      * 게시물 수정
      * @param postId
      * @param requestDto
-     * @param request
+     * @param authUser
      * @return  상태 코드 200, 업데이트된 게시물 정보
      */
     @PutMapping("/{postId}")
-    public ResponseEntity<PostResponseDto> updatePost(@PathVariable Long postId, @RequestBody PostRequestDto requestDto, HttpServletRequest request){
-        Long userId = (Long) request.getAttribute("userId");
+    public ResponseEntity<PostResponseDto> updatePost(@PathVariable Long postId, @RequestBody PostRequestDto requestDto, @Auth AuthUser authUser){
+        Long userId = authUser.getId();
         PostResponseDto updatePost = postService.updatePost(postId, requestDto, userId);
         return ResponseEntity.ok(updatePost);
     }
@@ -78,12 +77,12 @@ public class PostController {
     /**
      * 게시물 삭제
      * @param postId
-     * @param request
+     * @param authUser
      * @return  상태 코드 200, 삭제된 게시물 아이디
      */
     @DeleteMapping("/{postId}")
-    public ResponseEntity<Long> deletePost(@PathVariable Long postId, HttpServletRequest request){
-        Long userId = (Long) request.getAttribute("userId");
+    public ResponseEntity<Long> deletePost(@PathVariable Long postId, @Auth AuthUser authUser){
+        Long userId = authUser.getId();
         Long deletePostId = postService.deletePost(postId, userId);
         return ResponseEntity.ok(deletePostId);
     }
@@ -91,11 +90,11 @@ public class PostController {
     /**
      * 좋아요 기능
      * @param postId
-     * @param request
+     * @param authUser
      */
     @PostMapping("/{postId}/likes")
-    public void toggleLikePost(@PathVariable Long postId, HttpServletRequest request){
-        Long userId = (Long) request.getAttribute("userId");
+    public void toggleLikePost(@PathVariable Long postId, @Auth AuthUser authUser){
+        Long userId = authUser.getId();
         postService.toggleLikePost(postId, userId);
     }
 }
