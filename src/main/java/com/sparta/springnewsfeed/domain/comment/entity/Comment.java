@@ -1,6 +1,6 @@
 package com.sparta.springnewsfeed.domain.comment.entity;
 
-import com.sparta.springnewsfeed.domain.user.entity.Timestamped;
+import com.sparta.springnewsfeed.global.entity.Timestamped;
 import com.sparta.springnewsfeed.domain.user.entity.User;
 import com.sparta.springnewsfeed.domain.post.entity.Post;
 import jakarta.persistence.*;

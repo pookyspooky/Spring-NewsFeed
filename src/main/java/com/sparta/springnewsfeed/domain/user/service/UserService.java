@@ -1,6 +1,6 @@
 package com.sparta.springnewsfeed.domain.user.service;
 
-import com.sparta.springnewsfeed.config.PasswordEncoder;
+import com.sparta.springnewsfeed.global.config.PasswordEncoder;
 import com.sparta.springnewsfeed.domain.user.dto.*;
 import com.sparta.springnewsfeed.domain.user.entity.User;
 import com.sparta.springnewsfeed.domain.user.repository.UserRepository;

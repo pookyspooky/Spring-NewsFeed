@@ -1,7 +1,7 @@
 package com.sparta.springnewsfeed.domain.profile.entity;
 
 import com.sparta.springnewsfeed.domain.profile.dto.request.CreateProfileRequestDto;
-import com.sparta.springnewsfeed.domain.user.entity.Timestamped;
+import com.sparta.springnewsfeed.global.entity.Timestamped;
 import com.sparta.springnewsfeed.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;

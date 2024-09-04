@@ -50,12 +50,12 @@ public class PostController {
 
     /**
      * 특정 게시물 조회
-     * @param id
+     * @param postId
      * @return 상태 코드 200, 게시물 정보
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<PostResponseDto> getPost(@PathVariable Long id){
-        PostResponseDto post = postService.getPost(id);
+    @GetMapping("/{postId}")
+    public ResponseEntity<PostResponseDto> getPost(@PathVariable Long postId){
+        PostResponseDto post = postService.getPost(postId);
         return ResponseEntity.ok(post);
     }
     
@@ -63,28 +63,39 @@ public class PostController {
 
     /**
      * 게시물 수정
-     * @param id
+     * @param postId
      * @param requestDto
      * @param request
      * @return  상태 코드 200, 업데이트된 게시물 정보
      */
-    @PutMapping("/{id}")
-    public ResponseEntity<PostResponseDto> updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto, HttpServletRequest request){
+    @PutMapping("/{postId}")
+    public ResponseEntity<PostResponseDto> updatePost(@PathVariable Long postId, @RequestBody PostRequestDto requestDto, HttpServletRequest request){
         Long userId = (Long) request.getAttribute("userId");
-        PostResponseDto updatePost = postService.updatePost(id, requestDto, userId);
+        PostResponseDto updatePost = postService.updatePost(postId, requestDto, userId);
         return ResponseEntity.ok(updatePost);
     }
 
     /**
      * 게시물 삭제
-     * @param id
+     * @param postId
      * @param request
      * @return  상태 코드 200, 삭제된 게시물 아이디
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Long> deletePost(@PathVariable Long id, HttpServletRequest request){
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Long> deletePost(@PathVariable Long postId, HttpServletRequest request){
         Long userId = (Long) request.getAttribute("userId");
-        Long deletePostId = postService.deletePost(id, userId);
+        Long deletePostId = postService.deletePost(postId, userId);
         return ResponseEntity.ok(deletePostId);
+    }
+
+    /**
+     * 좋아요 기능
+     * @param postId
+     * @param request
+     */
+    @PostMapping("/{postId}/likes")
+    public void toggleLikePost(@PathVariable Long postId, HttpServletRequest request){
+        Long userId = (Long) request.getAttribute("userId");
+        postService.toggleLikePost(postId, userId);
     }
 }
