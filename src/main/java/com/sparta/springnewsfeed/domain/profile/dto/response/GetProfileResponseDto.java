@@ -17,6 +17,7 @@ public class GetProfileResponseDto {
     private List<String> posts;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+    private int likeCount;
 
     public GetProfileResponseDto(Profile profile){
         this.profileId = profile.getId();
@@ -28,6 +29,7 @@ public class GetProfileResponseDto {
                 .collect(Collectors.toList());
         this.createdAt = profile.getCreatedAt();
         this.modifiedAt = profile.getModifiedAt();
+        this.likeCount = profile.getLikeCount();
     }
 
 }
