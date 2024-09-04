@@ -50,6 +50,7 @@ public class ProfileService {
         return new CreateProfileResponseDto((saveProfile));
     }
 
+    // 유저 확인
     private User findeUserById(Long id){
         return userRepository.findById(id)
                 .orElseThrow(()-> new IllegalArgumentException("선택한 유저가 존재하지 않습니다."));
