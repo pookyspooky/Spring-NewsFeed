@@ -4,6 +4,7 @@ import com.sparta.springnewsfeed.domain.likes.entity.Likes;
 import com.sparta.springnewsfeed.domain.likes.repository.LikesRepository;
 import com.sparta.springnewsfeed.domain.post.command.Command;
 import com.sparta.springnewsfeed.domain.post.command.LikePostCommand;
+import com.sparta.springnewsfeed.domain.post.dto.PostCreateResponseDto;
 import com.sparta.springnewsfeed.domain.post.dto.PostRequestDto;
 import com.sparta.springnewsfeed.domain.post.dto.PostResponseDto;
 import com.sparta.springnewsfeed.domain.post.dto.PostResponseListDto;
@@ -30,7 +31,7 @@ public class PostService {
     private final UserRepository userRepository;
     private final LikesRepository likesRepository;
 
-    public PostResponseDto createPost(PostRequestDto requestDto, Long userId) {
+    public PostCreateResponseDto createPost(PostRequestDto requestDto, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException(USER_ERROR_MESSAGE));
 
@@ -38,7 +39,7 @@ public class PostService {
         post.setUser(user);
 
         Post savePost = postRepository.save(post);
-        return PostResponseDto.fromEntity(savePost);
+        return PostCreateResponseDto.fromEntity(savePost);
     }
     @Transactional(readOnly = true)
     public Page<PostResponseListDto> getPostList(Pageable pageable) {
