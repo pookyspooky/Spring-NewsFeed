@@ -5,6 +5,7 @@ import com.sparta.springnewsfeed.domain.follow.entity.Follow;
 import com.sparta.springnewsfeed.domain.post.entity.Post;
 import com.sparta.springnewsfeed.domain.profile.entity.Profile;
 import com.sparta.springnewsfeed.domain.user.dto.UserRequestDto;
+import com.sparta.springnewsfeed.global.entity.Timestamped;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.List;
 @Getter
 @Table(name ="users")
 @NoArgsConstructor
-public class User extends Timestamped{
+public class User extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="user_id")
@@ -30,8 +31,8 @@ public class User extends Timestamped{
     @OneToOne(mappedBy = "user")
     private Profile profile;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<Post> postList = new ArrayList<>();      // 필터 구현해 주석 해제
+    @OneToMany(mappedBy = "user")
+    private List<Post> postList = new ArrayList<>();      // 필터 구현해 주석 해제
 
     @OneToMany(mappedBy = "user")
     private List<Comment> commentList = new ArrayList<>();

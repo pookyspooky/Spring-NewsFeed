@@ -1,4 +1,4 @@
-package com.sparta.springnewsfeed.config;
+package com.sparta.springnewsfeed.global.config;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
