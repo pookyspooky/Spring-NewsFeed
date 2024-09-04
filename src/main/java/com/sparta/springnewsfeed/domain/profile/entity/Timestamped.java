@@ -1,4 +1,4 @@
-package com.sparta.springnewsfeed.domain.user.entity;
+package com.sparta.springnewsfeed.domain.profile.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @MappedSuperclass //timestaped entity를 상속하는 겍체에 자동으로 timestamped 필드의 컬럼 부여
 @EntityListeners(AuditingEntityListener.class)
-public abstract class Timestamped {
+public class Timestamped {
     @CreatedDate
     @Column(updatable = false)
     @Temporal(TemporalType.TIMESTAMP)

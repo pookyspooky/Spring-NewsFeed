@@ -1,6 +1,6 @@
 package com.sparta.springnewsfeed.domain.user.service;
 
-import com.sparta.springnewsfeed.config.PasswordEncoder;
+import com.sparta.springnewsfeed.global.config.PasswordEncoder;
 import com.sparta.springnewsfeed.domain.user.dto.*;
 import com.sparta.springnewsfeed.domain.user.entity.User;
 import com.sparta.springnewsfeed.domain.user.repository.UserRepository;
@@ -59,8 +59,11 @@ public class UserService {
         String password = logInRequest.getPassword();
 
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
+
         if(!passwordEncoder.matches(password, user.getPassword()) || !user.getEmail().equals(email)||!id.equals(authUser.getId())) {
             throw new IllegalArgumentException("유저 정보가 일치 하지 않습니다.");
+
+
         }
         userRepository.deleteById(id);
         return "User Deleted";
@@ -72,7 +75,7 @@ public class UserService {
             throw new IllegalArgumentException("유저 정보가 일치 하지 않습니다.");
         }
         if(!passwordEncoder.matches(passwordRequest.getOldPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("현제 비밀번호가 일치하지않습니다.");
+            throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
         }
         String password = passwordEncoder.encode(passwordRequest.getNewPassword());
         user.changePassword(password);

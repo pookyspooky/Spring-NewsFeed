@@ -11,13 +11,17 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CommentResponseDto {
 
+    private final Long id;
     private final String comment;
     private final LocalDateTime createdAt;
+    private final LocalDateTime modifiedAt;
 
     public static CommentResponseDto entityToDto(Comment comment) {
         return new CommentResponseDto(
+                comment.getId(),
                 comment.getComment(),
-                comment.getCreatedAt()
+                comment.getCreatedAt(),
+                comment.getModifiedAt()
         );
     }
 }

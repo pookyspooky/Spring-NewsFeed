@@ -16,7 +16,8 @@ public class PostResponseListDto {
     private LocalDateTime createdAt;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedAt;
-    private Integer commentCount;
+    private int commentCount;
+    private int likeCount;
 
     public static PostResponseListDto fromEntity(Post post){
         PostResponseListDto dto = new PostResponseListDto();
@@ -25,7 +26,8 @@ public class PostResponseListDto {
         dto.setContent(post.getContent());
         dto.setCreatedAt(post.getCreatedAt());
         dto.setModifiedAt(post.getModifiedAt());
-        dto.setCommentCount(post.getCommentList().size());
+        dto.setCommentCount(post.getCommentCount());
+        dto.setLikeCount(post.getLikeCount());
         return dto;
     }
 }
