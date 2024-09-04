@@ -54,20 +54,26 @@ public class UserService {
     }
 
 
-    public String delete(Long id, LoginRequestDto logInRequest) {
+    public String delete(Long id, LoginRequestDto logInRequest, AuthUser authUser) {
         String email = logInRequest.getEmail();
         String password = logInRequest.getPassword();
 
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        if(!passwordEncoder.matches(password, user.getPassword()) || !user.getEmail().equals(email)) {
-            throw new IllegalArgumentException("유저 정보가 일치하지 않습니다.");
+
+        if(!passwordEncoder.matches(password, user.getPassword()) || !user.getEmail().equals(email)||!id.equals(authUser.getId())) {
+            throw new IllegalArgumentException("유저 정보가 일치 하지 않습니다.");
+
+
         }
         userRepository.deleteById(id);
         return "User Deleted";
     }
 
-    public String changePassword(Long id, ChangePasswordRequestDto passwordRequest) {
+    public String changePassword(Long id, ChangePasswordRequestDto passwordRequest, AuthUser authUser) {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        if(!id.equals(authUser.getId())) {
+            throw new IllegalArgumentException("유저 정보가 일치 하지 않습니다.");
+        }
         if(!passwordEncoder.matches(passwordRequest.getOldPassword(), user.getPassword())) {
             throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
         }
