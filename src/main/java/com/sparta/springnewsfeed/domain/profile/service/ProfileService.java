@@ -1,5 +1,9 @@
 package com.sparta.springnewsfeed.domain.profile.service;
 
+import com.sparta.springnewsfeed.domain.likes.entity.ProfileLikes;
+import com.sparta.springnewsfeed.domain.likes.repository.ProfileLikesRepository;
+import com.sparta.springnewsfeed.domain.profile.command.Command;
+import com.sparta.springnewsfeed.domain.profile.command.LikeProfileCommand;
 import com.sparta.springnewsfeed.domain.profile.dto.request.CreateProfileRequestDto;
 import com.sparta.springnewsfeed.domain.profile.dto.request.UpdateProfileRequestDto;
 import com.sparta.springnewsfeed.domain.profile.dto.response.CreateProfileResponseDto;
@@ -10,18 +14,21 @@ import com.sparta.springnewsfeed.domain.profile.repository.ProfileRepository;
 import com.sparta.springnewsfeed.domain.user.entity.User;
 import com.sparta.springnewsfeed.domain.user.repository.UserRepository;
 import com.sparta.springnewsfeed.global.exception.UnauthorizedAccessException;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional
 public class ProfileService {
 
+    private static final String USER_ERROR_MESSAGE = "유저를 찾을 수 없습니다.";
+    private static final String PROFILE_ERROR_MESSAGE = "프로필을 찾을 수 없습니다.";
     private static final String UNAUTHORIZED_ERROR_MESSAGE = "권한이 없습니다.";
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
+    private final ProfileLikesRepository profileLikesRepository;
 
     // 프로필 등록
     public CreateProfileResponseDto createProfile(Long userId, CreateProfileRequestDto createProfileRequestDto) {
@@ -48,6 +55,7 @@ public class ProfileService {
                 .orElseThrow(()-> new IllegalArgumentException("선택한 유저가 존재하지 않습니다."));
     }
 
+    // 프로필 수정
     public UpdateProfileResponseDto updateProfile(Long id, UpdateProfileRequestDto updateProfileRequestDto, Long userId) {
         try{
             // 1. 프로필 확인
@@ -71,11 +79,33 @@ public class ProfileService {
 
     }
 
+    // 프로필 조회
     @Transactional(readOnly = true)
     public GetProfileResponseDto getProfileById(Long profileId) {
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(()-> new IllegalArgumentException("선택한 프로필이 없습니다."));
 
         return new GetProfileResponseDto(profile);
+    }
+
+    // 프로필 좋아요
+    public void toggleLikeProfile(Long profileId, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException(USER_ERROR_MESSAGE));
+
+        Profile profile = profileRepository.findById(profileId)
+                .orElseThrow(() -> new RuntimeException(PROFILE_ERROR_MESSAGE));
+
+        ProfileLikes existingLike = profileLikesRepository.findByUserAndProfile(user, profile);
+
+        if(profile.getUser().getId().equals(userId))
+            throw new UnauthorizedAccessException(UNAUTHORIZED_ERROR_MESSAGE);
+
+        if(existingLike != null){
+            Command unlikeCommand = new LikeProfileCommand(profileLikesRepository, user, profile, existingLike);
+            unlikeCommand.undo();
+        }else {
+            Command likeCommand = new LikeProfileCommand(profileLikesRepository, user, profile, null);
+        }
     }
 }
