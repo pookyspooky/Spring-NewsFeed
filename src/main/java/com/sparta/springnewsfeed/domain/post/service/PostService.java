@@ -1,5 +1,7 @@
 package com.sparta.springnewsfeed.domain.post.service;
 
+import com.sparta.springnewsfeed.domain.file.entity.File;
+import com.sparta.springnewsfeed.domain.file.service.FileService;
 import com.sparta.springnewsfeed.domain.follow.dto.response.FollowingResponseDto;
 import com.sparta.springnewsfeed.domain.follow.service.FollowService;
 import com.sparta.springnewsfeed.domain.likes.entity.Likes;
@@ -20,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,14 +37,20 @@ public class PostService {
     private final UserRepository userRepository;
     private final LikesRepository likesRepository;
     private final FollowService followService;
+    private final FileService fileService;
 
     // 게시물 생성
-    public PostResponseDto createPost(PostRequestDto requestDto, Long userId) {
+    public PostResponseDto createPost(PostRequestDto requestDto, Long userId){
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException(USER_ERROR_MESSAGE));
 
         Post post = requestDto.toEntity();
         post.setUser(user);
+
+        if (requestDto.getImage() != null && !requestDto.getImage().isEmpty()){
+            File file =  fileService.saveFile(requestDto.getImage());
+            post.addFile(file);
+        }
 
         Post savePost = postRepository.save(post);
         return PostResponseDto.fromEntity(savePost);
