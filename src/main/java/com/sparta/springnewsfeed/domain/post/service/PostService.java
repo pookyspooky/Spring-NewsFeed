@@ -19,6 +19,8 @@ import com.sparta.springnewsfeed.domain.user.entity.User;
 import com.sparta.springnewsfeed.domain.user.repository.UserRepository;
 import com.sparta.springnewsfeed.global.exception.UnauthorizedAccessException;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 public class PostService {
+    private static final Logger logger = LoggerFactory.getLogger(PostService.class);
     private static final String USER_ERROR_MESSAGE = "유저를 찾을 수 없습니다.";
     private static final String POST_ERROR_MESSAGE = "일정을 찾을 수 없습니다.";
     private static final String UNAUTHORIZED_ERROR_MESSAGE = "권한이 없습니다.";
@@ -43,6 +46,7 @@ public class PostService {
 
     // 게시물 생성
     public PostResponseDto createPost(PostRequestDto requestDto, Long userId){
+        logger.info("Creating post in service layer for user: {}", userId);
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException(USER_ERROR_MESSAGE));
 
@@ -57,6 +61,7 @@ public class PostService {
         Post savePost = postRepository.save(post);
         return PostResponseDto.fromEntity(savePost);
     }
+
     // 게시물 목록 조회
     @Transactional(readOnly = true)
     public Page<PostResponseListDto> getPostList(Pageable pageable) {

@@ -53,6 +53,9 @@ public class Post extends Timestamped {
     public void setUser(User user) {
         this.user = user;
     }
+    public int getFileCount(){
+        return fileList.size();
+    }
 
     public int getLikeCount(){
         return likeList.size();

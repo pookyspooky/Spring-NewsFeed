@@ -1,5 +1,7 @@
 package com.sparta.springnewsfeed.global.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -7,8 +9,10 @@ import org.springframework.validation.ObjectError;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Getter
 public class ApiResponse<T> {
+
     public enum Status {
         SUCCESS, FAIL, ERROR
     }
@@ -24,11 +28,11 @@ public class ApiResponse<T> {
     }
 
     public static <T> ApiResponse<T> success(T data) {
-        return new ApiResponse<>(Status.SUCCESS, data, "Request processed successfully");
+        return new ApiResponse<>(Status.SUCCESS, data, "요청이 성공적으로 처리되었습니다");
     }
 
     public static ApiResponse<?> successWithNoContent() {
-        return new ApiResponse<>(Status.SUCCESS, null, "Request processed successfully with no content");
+        return new ApiResponse<>(Status.SUCCESS, null, "요청이 성공적으로 처리되었지만 내용이 없습니다");
     }
 
     public static ApiResponse<?> fail(BindingResult bindingResult) {
@@ -42,7 +46,11 @@ public class ApiResponse<T> {
                 errors.put(error.getObjectName(), error.getDefaultMessage());
             }
         }
-        return new ApiResponse<>(Status.FAIL, errors, "Validation failed");
+        return new ApiResponse<>(Status.FAIL, errors, "검증에 실패했습니다");
+    }
+
+    public static ApiResponse<?> fail(Map<String, String> errors) {
+        return new ApiResponse<>(Status.FAIL, errors, "검증에 실패했습니다");
     }
 
     public static ApiResponse<?> error(String message) {
