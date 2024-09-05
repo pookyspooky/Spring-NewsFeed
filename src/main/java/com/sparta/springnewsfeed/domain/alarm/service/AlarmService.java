@@ -3,8 +3,6 @@ package com.sparta.springnewsfeed.domain.alarm.service;
 import com.sparta.springnewsfeed.domain.alarm.dto.TotalAlarmResponseDto;
 import com.sparta.springnewsfeed.domain.alarm.entity.Alarm;
 import com.sparta.springnewsfeed.domain.alarm.repository.AlarmRepository;
-import com.sparta.springnewsfeed.domain.follow.dto.response.FollowerResponseDto;
-import com.sparta.springnewsfeed.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

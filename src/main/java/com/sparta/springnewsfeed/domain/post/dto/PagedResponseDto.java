@@ -1,11 +1,11 @@
 package com.sparta.springnewsfeed.domain.post.dto;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import lombok.Getter;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@Getter
 public class PagedResponseDto<T> {
     private List<T> content;
     private int pageNo;
@@ -13,6 +13,10 @@ public class PagedResponseDto<T> {
     private Long totalElements;
     private int totalPages;
     private Boolean last;
+    private Boolean first;
+    private Boolean empty;
+    private Boolean hasPrevious;     // 이전 버튼
+    private Boolean hasNext;     // 다음 버튼
 
     public PagedResponseDto(Page<T> page){
         this.content = page.getContent();
@@ -21,5 +25,9 @@ public class PagedResponseDto<T> {
         this.totalElements = page.getTotalElements();
         this.totalPages = page.getTotalPages();
         this.last = page.isLast();
+        this.first = page.isFirst();
+        this.empty = page.isEmpty();
+        this.hasPrevious = page.hasPrevious();
+        this.hasNext = page.hasNext();
     }
 }

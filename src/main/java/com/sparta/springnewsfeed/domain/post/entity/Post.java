@@ -1,5 +1,6 @@
 package com.sparta.springnewsfeed.domain.post.entity;
 
+import com.sparta.springnewsfeed.domain.file.entity.File;
 import com.sparta.springnewsfeed.domain.likes.entity.Likes;
 import com.sparta.springnewsfeed.global.entity.Timestamped;
 import com.sparta.springnewsfeed.domain.user.entity.User;
@@ -24,18 +25,18 @@ public class Post extends Timestamped {
     @Column(nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<File> fileList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Likes> likeList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-
-    private int likeCount;
-    private int commentCount;
 
     public void setId(Long id) {
         this.id = id;
@@ -59,5 +60,15 @@ public class Post extends Timestamped {
 
     public int getCommentCount(){
         return commentList.size();
+    }
+
+    public void addFile(File file) {
+        this.fileList.add(file);
+        file.setPost(this);
+    }
+
+    public void removeFile(File file) {
+        this.fileList.remove(file);
+        file.setPost(null);
     }
 }

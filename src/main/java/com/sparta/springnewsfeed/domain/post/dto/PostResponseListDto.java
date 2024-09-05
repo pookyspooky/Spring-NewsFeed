@@ -1,13 +1,13 @@
 package com.sparta.springnewsfeed.domain.post.dto;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sparta.springnewsfeed.domain.post.entity.Post;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 @Setter
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@Getter
 public class PostResponseListDto {
     private Long id;
     private String title;
