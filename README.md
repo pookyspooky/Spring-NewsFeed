@@ -282,6 +282,9 @@
 
 # ⚒️ ERD Diagram
 
+![image](https://github.com/user-attachments/assets/bee210d6-1559-43a4-99f9-b268cd2efacc)
+
+
 #  📊 SQL
 
      create table users
