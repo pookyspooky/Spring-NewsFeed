@@ -5,8 +5,7 @@
 - 내용 : 좋아하는 음악을 공유하며 의견을 주고 받는 페이지
 
 
-## 🚀 STACK
-
+# 🚀 STACK 
 **Environment**
 
 ![인텔리제이](   https://img.shields.io/badge/IntelliJ_IDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
@@ -21,7 +20,7 @@
 ![SQL](https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 ![Gradle](https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white)
 
-## Authors
+# 🤔 Authors
 
 - [@pookyspooky](https://www.github.com/pookyspooky)
 - [@DaegyuHan](https://www.github.com/DaegyuHan)
@@ -32,16 +31,16 @@
 
 
 
-## Acknowledgements
+# Acknowledgements
 
  - [Awesome Readme Templates](https://awesomeopensource.com/project/elangosundar/awesome-README-templates)
  - [Awesome README](https://github.com/matiassingers/awesome-readme)
  - [How to write a Good readme](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project)
 
-## Wireframe
+## 🖼️ Wireframe
 <img width="1000" alt="스크린샷_2024-09-05_오후_3 11 00" src="https://github.com/user-attachments/assets/2c9dcc13-f4f5-4bfb-a3ea-436c4d884292">
 
-## API Reference
+# 🔖 API Reference
 
 ## 유저
 #### 회원가입
@@ -281,5 +280,5 @@
 ```
 
 
-## ERD Diagram
-## SQL
+# ⚒️ ERD Diagram
+#  📊 SQL
