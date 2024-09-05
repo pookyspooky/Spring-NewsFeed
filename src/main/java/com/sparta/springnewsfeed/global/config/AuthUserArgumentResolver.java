@@ -1,4 +1,4 @@
-package com.sparta.springnewsfeed.config;
+package com.sparta.springnewsfeed.global.config;
 
 import com.sparta.springnewsfeed.annotation.Auth;
 import com.sparta.springnewsfeed.domain.user.dto.AuthUser;
