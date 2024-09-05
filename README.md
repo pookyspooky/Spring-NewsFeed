@@ -1,7 +1,8 @@
 
 ![header](https://capsule-render.vercel.app/api?type=waving&height=300&color=gradient&text=Spring%20Newsfeed)
 
-A brief description of what this project does and who it's for
+- 한 줄 정리 : 페이스북, 인스타그램 등과 같은 SNS 프로젝트
+- 내용 : 좋아하는 음악을 공유하며 의견을 주고 받는 페이지
 
 
 ## 🚀 STACK
@@ -131,7 +132,7 @@ A brief description of what this project does and who it's for
 
 #### 게시물 작성
 ```http
-  POST /api/profile
+  POST /api/posts
 ```
 
 | Parameter | Type     | Description                       |
@@ -140,7 +141,7 @@ A brief description of what this project does and who it's for
 
 #### 게시물 조회
 ```http
-  GET /api/profile
+  GET /api/posts
 ```
 
 #### 게시물 수정
@@ -236,7 +237,7 @@ A brief description of what this project does and who it's for
 
 ## 팔로우
 
-#### 팔로우 신청
+#### 팔로우 신청
 ```http
   POST /api/follow/{followId}
 ```
@@ -245,7 +246,7 @@ A brief description of what this project does and who it's for
 | :-------- | :------- | :-------------------------------- |
 | `followId`| `string` | **Required**. 팔로우 고유식별 번호 |
 
-#### 팔로우 수락
+#### 팔로우 수락
 ```http
   PUT /api/follow/request/{followId}
 ```
@@ -254,17 +255,16 @@ A brief description of what this project does and who it's for
 | :-------- | :------- | :-------------------------------- |
 | `followId`| `string` | **Required**. 팔로우 고유식별 번호 |
 
-#### 팔로잉 목록 조회
+#### 팔로잉 목록 조회
 ```http
   GET /api/follow/following-list
 ```
 
-#### 팔로워 목록 조회
+#### 팔로워 목록 조회
 ```http
   GET /api/follow/follower-list
 ```
-
-#### 팔로우 신청 거부, 팔로잉 삭제
+#### 팔로우 신청 거부, 팔로잉 삭제
 ```http
   DELETE /api/follow/{followId}
 ```
@@ -273,7 +273,7 @@ A brief description of what this project does and who it's for
 | :-------- | :------- | :-------------------------------- |
 | `followId`| `string` | **Required**. 팔로우 고유식별 번호 |
 
-#### 팔로우 신청 목록 조회
+#### 팔로우 신청 목록 조회
 ```http
   GET /api/follow/request/follower-list
 ```
