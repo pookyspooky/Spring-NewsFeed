@@ -37,7 +37,7 @@
  - [Awesome README](https://github.com/matiassingers/awesome-readme)
  - [How to write a Good readme](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project)
 
-## 🖼️ Wireframe
+# 🖼️ Wireframe
 <img width="1000" alt="스크린샷_2024-09-05_오후_3 11 00" src="https://github.com/user-attachments/assets/2c9dcc13-f4f5-4bfb-a3ea-436c4d884292">
 
 # 🔖 API Reference
