@@ -32,6 +32,7 @@ public class Profile extends Timestamped {
     @OneToMany(mappedBy = "profile", cascade = CascadeType.REMOVE)
     private List<ProfileLikes> likeList = new ArrayList<>();
 
+
     public Profile(CreateProfileRequestDto createProfileRequestDto, User user) {
         this.description = createProfileRequestDto.getDescription();
         this.user = user;

@@ -18,8 +18,9 @@ public class GetProfileResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private int likeCount;
+    private String newAlarmCount;
 
-    public GetProfileResponseDto(Profile profile){
+    public GetProfileResponseDto(Profile profile, String newAlarmCount){
         this.profileId = profile.getId();
         this.username = profile.getUser().getUsername();
         this.email = profile.getUser().getEmail();
@@ -30,6 +31,7 @@ public class GetProfileResponseDto {
         this.createdAt = profile.getCreatedAt();
         this.modifiedAt = profile.getModifiedAt();
         this.likeCount = profile.getLikeCount();
+        this.newAlarmCount = newAlarmCount;
     }
 
 }

@@ -41,8 +41,8 @@ public class CommentService {
         );
         Comment savedComment = commentRepository.save(comment);
 
-        // 댓글 작성자와 게시물 작성자가 일치하면 알람 저장 X
-        // 알람 저장
+        // 알림 저장
+        // 댓글 작성자와 게시물 작성자가 일치하면 알림 저장 X
         if (!user.getId().equals(post.getUser().getId())) {
             Alarm alarm = Alarm.CommentAlarm(user, post.getUser(), post.getTitle());
             alarmRepository.save(alarm);
@@ -93,6 +93,13 @@ public class CommentService {
         if (existingLike != null) {
             Command unlikeCommand = new LikeCommentCommand(commentLikesRepository, user, comment, existingLike);
             unlikeCommand.undo();
+
+            // 알림 저장
+            // 로그인 유저와 댓글 작성자가 일치하면 알림 저장 X
+            if (!user.getId().equals(comment.getUser().getId())) {
+                Alarm alarm = Alarm.LikeCommentAlarm(user, comment.getUser());
+                alarmRepository.save(alarm);
+            }
         } else {
             Command likeCommand = new LikeCommentCommand(commentLikesRepository, user, comment, null);
             likeCommand.execute();
