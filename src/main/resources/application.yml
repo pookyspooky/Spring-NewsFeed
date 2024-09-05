@@ -26,6 +26,8 @@ spring:
         use_sql_comments: true
         dialect: org.hibernate.dialect.MySQL8Dialect
 
+file:
+  upload-dir: /path/to/upload-directory
 
 jwt:
   secret:
