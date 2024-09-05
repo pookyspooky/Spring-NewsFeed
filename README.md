@@ -281,4 +281,148 @@
 
 
 # ⚒️ ERD Diagram
+
 #  📊 SQL
+
+     create table users
+    (
+        user_id     bigint auto_increment
+            primary key,
+        created_at  datetime(6)  null,
+        modified_at datetime(6)  null,
+        email       varchar(255) null,
+        password    varchar(255) not null,
+        username    varchar(255) null
+    );
+    
+    create table alarm
+    (
+        id                bigint auto_increment
+            primary key,
+        created_at        datetime(6)             null,
+        modified_at       datetime(6)             null,
+        alarm_content     varchar(255)            null,
+        alarm_receiver_id bigint                  null,
+        alarm_sender_id   bigint                  null,
+        checking_alarm    enum ('CHECKED', 'NEW') null,
+        constraint FK619cta13yhqb34xm53ladadg5
+            foreign key (alarm_sender_id) references users (user_id),
+        constraint FKn3lovki7ivfvn6124c5uxtl9o
+            foreign key (alarm_receiver_id) references users (user_id)
+    );
+    
+    create table follow
+    (
+        id           bigint auto_increment
+            primary key,
+        accepted     enum ('ACCEPTED', 'NOT_YET') null,
+        follower_id  bigint                       null,
+        following_id bigint                       null,
+        constraint FK9oqsjovu9bl95dwt8ibiy2oey
+            foreign key (following_id) references users (user_id),
+        constraint FKjikg34txcxnhcky26w14fvfcc
+            foreign key (follower_id) references users (user_id)
+    );
+    
+    create table posts
+    (
+        id            bigint auto_increment
+            primary key,
+        created_at    datetime(6)  null,
+        modified_at   datetime(6)  null,
+        comment_count int          not null,
+        content       varchar(255) not null,
+        like_count    int          not null,
+        title         varchar(100) not null,
+        user_id       bigint       null,
+        constraint FK5lidm6cqbc7u4xhqpxm898qme
+            foreign key (user_id) references users (user_id)
+    );
+    
+    create table comment
+    (
+        comment_id  bigint auto_increment
+            primary key,
+        created_at  datetime(6)  null,
+        modified_at datetime(6)  null,
+        comment     varchar(500) not null,
+        post_id     bigint       not null,
+        user_id     bigint       not null,
+        constraint FK7jok1s6lywoh0srylq8lt7tmn
+            foreign key (post_id) references posts (id),
+        constraint FKqm52p1v3o13hy268he0wcngr5
+            foreign key (user_id) references users (user_id)
+    );
+    
+    create table comment_likes
+    (
+        id          bigint auto_increment
+            primary key,
+        created_at  datetime(6) null,
+        modified_at datetime(6) null,
+        is_like     bit         not null,
+        comment_id  bigint      null,
+        user_id     bigint      null,
+        constraint FK6h3lbneryl5pyb9ykaju7werx
+            foreign key (user_id) references users (user_id),
+        constraint FKd0epu3dcjc57pwe7lt5jgfqsi
+            foreign key (comment_id) references comment (comment_id)
+    );
+    
+    create table file
+    (
+        id                 bigint auto_increment
+            primary key,
+        file_path          varchar(255) not null,
+        file_size          bigint       not null,
+        file_type          varchar(255) null,
+        original_file_name varchar(255) not null,
+        stored_file_name   varchar(255) not null,
+        post_id            bigint       null,
+        constraint FKaxrl5nul6wsfiv2edyo27wypp
+            foreign key (post_id) references posts (id)
+    );
+    
+    create table likes
+    (
+        id          bigint auto_increment
+            primary key,
+        created_at  datetime(6) null,
+        modified_at datetime(6) null,
+        is_like     bit         not null,
+        post_id     bigint      null,
+        user_id     bigint      null,
+        constraint FKnvx9seeqqyy71bij291pwiwrg
+            foreign key (user_id) references users (user_id),
+        constraint FKry8tnr4x2vwemv2bb0h5hyl0x
+            foreign key (post_id) references posts (id)
+    );
+    
+    create table profiles
+    (
+        profile_id  bigint auto_increment
+            primary key,
+        created_at  datetime(6)  null,
+        modified_at datetime(6)  null,
+        description varchar(255) null,
+        user_id     bigint       not null,
+        constraint UK4ixsj6aqve5pxrbw2u0oyk8bb
+            unique (user_id),
+        constraint FK410q61iev7klncmpqfuo85ivh
+            foreign key (user_id) references users (user_id)
+    );
+    
+    create table profile_likes
+    (
+        id          bigint auto_increment
+            primary key,
+        created_at  datetime(6) null,
+        modified_at datetime(6) null,
+        is_like     bit         not null,
+        profile_id  bigint      null,
+        user_id     bigint      null,
+        constraint FK6nhqe59u317g9dwdjdf1wcg6w
+            foreign key (user_id) references users (user_id),
+        constraint FKe1dlsggebplf5p0ljnkvytiq8
+            foreign key (profile_id) references profiles (profile_id)
+    );
