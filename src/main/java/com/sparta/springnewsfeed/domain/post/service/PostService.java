@@ -22,7 +22,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -122,6 +121,9 @@ public class PostService {
 
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException(POST_ERROR_MESSAGE));
+
+        if (post.getUser().getId().equals(userId))
+            throw new UnauthorizedAccessException("자기 게시물에 좋아요를 누를 수 없습니다.");
 
         Likes existingLike = likesRepository.findByUserAndPost(user, post);
 
