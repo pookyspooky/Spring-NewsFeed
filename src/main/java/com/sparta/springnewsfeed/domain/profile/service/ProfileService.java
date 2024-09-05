@@ -117,15 +117,16 @@ public class ProfileService {
             Command unlikeCommand = new LikeProfileCommand(profileLikesRepository, user, profile, existingLike);
             unlikeCommand.undo();
 
+        }else {
+            Command likeCommand = new LikeProfileCommand(profileLikesRepository, user, profile, null);
+            likeCommand.execute();
+
             // 알림 저장
             // 로그인 유저와 프로필 유저가 일치하면 알림 저장 X
             if (!user.getId().equals(profile.getUser().getId())) {
                 Alarm alarm = Alarm.LikeProfileAlarm(user, profile.getUser());
                 alarmRepository.save(alarm);
             }
-        }else {
-            Command likeCommand = new LikeProfileCommand(profileLikesRepository, user, profile, null);
-            likeCommand.execute();
         }
     }
 }

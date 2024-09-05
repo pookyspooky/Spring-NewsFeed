@@ -6,7 +6,7 @@ import com.sparta.springnewsfeed.domain.file.entity.File;
 import com.sparta.springnewsfeed.domain.file.service.FileService;
 import com.sparta.springnewsfeed.domain.follow.dto.response.FollowingResponseDto;
 import com.sparta.springnewsfeed.domain.follow.service.FollowService;
-import com.sparta.springnewsfeed.domain.likes.entity.Likes;
+import com.sparta.springnewsfeed.domain.likes.entity.PostLikes;
 import com.sparta.springnewsfeed.domain.likes.repository.LikesRepository;
 import com.sparta.springnewsfeed.domain.post.command.Command;
 import com.sparta.springnewsfeed.domain.post.command.LikePostCommand;
@@ -128,11 +128,16 @@ public class PostService {
         if (post.getUser().getId().equals(userId))
             throw new UnauthorizedAccessException("자기 게시물에 좋아요를 누를 수 없습니다.");
 
-        Likes existingLike = likesRepository.findByUserAndPost(user, post);
+        PostLikes existingLike = likesRepository.findByUserAndPost(user, post);
 
         if (existingLike != null){
             Command unlikeCommand = new LikePostCommand(likesRepository, user, post, existingLike);
             unlikeCommand.undo();
+
+
+        }else {
+            Command likeCommand = new LikePostCommand(likesRepository, user, post, null);
+            likeCommand.execute();
 
             // 알림 저장
             // 로그인 유저와 게시물 작성자가 일치하면 알림 저장 X
@@ -140,9 +145,6 @@ public class PostService {
                 Alarm alarm = Alarm.LikePostAlarm(user, post.getUser(), post.getTitle());
                 alarmRepository.save(alarm);
             }
-        }else {
-            Command likeCommand = new LikePostCommand(likesRepository, user, post, null);
-            likeCommand.execute();
         }
     }
     // 검색 기능

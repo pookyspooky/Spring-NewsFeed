@@ -1,7 +1,7 @@
 package com.sparta.springnewsfeed.domain.post.entity;
 
 import com.sparta.springnewsfeed.domain.file.entity.File;
-import com.sparta.springnewsfeed.domain.likes.entity.Likes;
+import com.sparta.springnewsfeed.domain.likes.entity.PostLikes;
 import com.sparta.springnewsfeed.global.entity.Timestamped;
 import com.sparta.springnewsfeed.domain.user.entity.User;
 import com.sparta.springnewsfeed.domain.comment.entity.Comment;
@@ -29,7 +29,7 @@ public class Post extends Timestamped {
     private List<File> fileList = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Likes> likeList = new ArrayList<>();
+    private List<PostLikes> likeList = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
