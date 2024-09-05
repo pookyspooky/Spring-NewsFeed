@@ -60,11 +60,16 @@ public class PostController {
      * @return 상태 코드 200, 게시물 정보들
      */
     @GetMapping
-    public ResponseEntity<PagedResponseDto<PostResponseListDto>> getPostList(@RequestParam(defaultValue = "0")int page,
+    public ResponseEntity<ApiResponse<?>> getPostList(@RequestParam(defaultValue = "0")int page,
                                                                  @RequestParam(defaultValue = "10")int size){
+        try {
             Pageable pageable = PageRequest.of(page, size);
             Page<PostResponseListDto> postPage = postService.getPostList(pageable);
-            return ResponseEntity.ok(new PagedResponseDto<>(postPage));
+            return ResponseEntity.ok(ApiResponse.success(new PagedResponseDto<>(postPage)));
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("게시물 목록 조회 중 오류가 발생햇습니다."));
+        }
     }
 
     /**
@@ -73,9 +78,14 @@ public class PostController {
      * @return 상태 코드 200, 게시물 정보
      */
     @GetMapping("/{postId}")
-    public ResponseEntity<PostResponseDto> getPost(@PathVariable Long postId){
-        PostResponseDto post = postService.getPost(postId);
-        return ResponseEntity.ok(post);
+    public ResponseEntity<ApiResponse<?>> getPost(@PathVariable Long postId){
+        try {
+            PostResponseDto post = postService.getPost(postId);
+            return ResponseEntity.ok(ApiResponse.success(post));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("특정 게시물 목록 조회 중 오류가 발생햇습니다."));
+        }
     }
 
     /**
@@ -86,13 +96,18 @@ public class PostController {
      * @return 상태 코드 200, 뉴스피드 게시물 정보들
      */
     @GetMapping("/newsfeed")
-    public ResponseEntity<PagedResponseDto<PostResponseListDto>> getNewsfeed(@RequestParam(defaultValue = "0")int  page,
+    public ResponseEntity<ApiResponse<?>> getNewsfeed(@RequestParam(defaultValue = "0")int  page,
                                                                              @RequestParam(defaultValue = "10")int size,
                                                                              @Auth AuthUser authUser){
-        Pageable pageable = PageRequest.of(page, size);
-        Long userId = authUser.getId();
-        Page<PostResponseListDto> newsfeedPage = postService.getNewsfeed(userId, pageable);
-        return ResponseEntity.ok(new PagedResponseDto<>(newsfeedPage));
+        try {
+            Pageable pageable = PageRequest.of(page, size);
+            Long userId = authUser.getId();
+            Page<PostResponseListDto> newsfeedPage = postService.getNewsfeed(userId, pageable);
+            return ResponseEntity.ok(ApiResponse.success(new PagedResponseDto<>(newsfeedPage)));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("뉴스피드 게시물 조회 중 오류가 발생햇습니다."));
+        }
     }
 
     /**
@@ -103,10 +118,15 @@ public class PostController {
      * @return  상태 코드 200, 업데이트된 게시물 정보
      */
     @PutMapping("/{postId}")
-    public ResponseEntity<PostResponseDto> updatePost(@PathVariable Long postId, @RequestBody PostRequestDto requestDto, @Auth AuthUser authUser){
-        Long userId = authUser.getId();
-        PostResponseDto updatePost = postService.updatePost(postId, requestDto, userId);
-        return ResponseEntity.ok(updatePost);
+    public ResponseEntity<ApiResponse<?>> updatePost(@PathVariable Long postId, @RequestBody PostRequestDto requestDto, @Auth AuthUser authUser){
+        try {
+            Long userId = authUser.getId();
+            PostResponseDto updatePost = postService.updatePost(postId, requestDto, userId);
+            return ResponseEntity.ok(ApiResponse.success(updatePost));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("게시물 수정 중 오류가 발생햇습니다."));
+        }
     }
 
     /**
@@ -116,10 +136,15 @@ public class PostController {
      * @return  상태 코드 200, 삭제된 게시물 아이디
      */
     @DeleteMapping("/{postId}")
-    public ResponseEntity<Long> deletePost(@PathVariable Long postId, @Auth AuthUser authUser){
-        Long userId = authUser.getId();
-        Long deletePostId = postService.deletePost(postId, userId);
-        return ResponseEntity.ok(deletePostId);
+    public ResponseEntity<ApiResponse<?>> deletePost(@PathVariable Long postId, @Auth AuthUser authUser){
+        try {
+            Long userId = authUser.getId();
+            Long deletePostId = postService.deletePost(postId, userId);
+            return ResponseEntity.ok(ApiResponse.success(deletePostId));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("게시물 삭제 중 오류가 발생햇습니다."));
+        }
     }
 
     /**
@@ -142,13 +167,18 @@ public class PostController {
      * @return 상태 코드 200, 검색 결과 게시물들
      */
     @GetMapping("/search")
-    public ResponseEntity<PagedResponseDto<PostResponseListDto>> searchPosts(@RequestParam String keyword,
+    public ResponseEntity<ApiResponse<?>> searchPosts(@RequestParam String keyword,
                                                                              @RequestParam(defaultValue = "both") String searchType,
                                                                              @RequestParam(defaultValue = "0")int page,
                                                                              @RequestParam(defaultValue = "10")int size){
-        Pageable pageable = PageRequest.of(page, size);
-        Page<PostResponseListDto> searchResult = postService.searchPosts(keyword, searchType, pageable);
+        try {
+            Pageable pageable = PageRequest.of(page, size);
+            Page<PostResponseListDto> searchResult = postService.searchPosts(keyword, searchType, pageable);
 
-        return ResponseEntity.ok(new PagedResponseDto<>(searchResult));
+            return ResponseEntity.ok(ApiResponse.success(new PagedResponseDto<>(searchResult)));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("검색 기능 중 오류가 발생햇습니다."));
+        }
     }
 }

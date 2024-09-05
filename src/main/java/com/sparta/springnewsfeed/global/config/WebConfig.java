@@ -1,5 +1,6 @@
-package com.sparta.springnewsfeed.config;
+package com.sparta.springnewsfeed.global.config;
 
+import com.sparta.springnewsfeed.global.config.AuthUserArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
