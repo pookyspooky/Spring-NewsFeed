@@ -1,5 +1,7 @@
 package com.sparta.springnewsfeed.domain.post.service;
 
+import com.sparta.springnewsfeed.domain.alarm.entity.Alarm;
+import com.sparta.springnewsfeed.domain.alarm.repository.AlarmRepository;
 import com.sparta.springnewsfeed.domain.file.entity.File;
 import com.sparta.springnewsfeed.domain.file.service.FileService;
 import com.sparta.springnewsfeed.domain.follow.dto.response.FollowingResponseDto;
@@ -35,6 +37,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final LikesRepository likesRepository;
+    private final AlarmRepository alarmRepository;
     private final FollowService followService;
     private final FileService fileService;
 
@@ -130,6 +133,13 @@ public class PostService {
         if (existingLike != null){
             Command unlikeCommand = new LikePostCommand(likesRepository, user, post, existingLike);
             unlikeCommand.undo();
+
+            // 알림 저장
+            // 로그인 유저와 게시물 작성자가 일치하면 알림 저장 X
+            if (!user.getId().equals(post.getUser().getId())) {
+                Alarm alarm = Alarm.LikePostAlarm(user, post.getUser(), post.getTitle());
+                alarmRepository.save(alarm);
+            }
         }else {
             Command likeCommand = new LikePostCommand(likesRepository, user, post, null);
             likeCommand.execute();

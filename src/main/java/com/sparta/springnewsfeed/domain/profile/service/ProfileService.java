@@ -1,5 +1,8 @@
 package com.sparta.springnewsfeed.domain.profile.service;
 
+import com.sparta.springnewsfeed.domain.alarm.entity.Alarm;
+import com.sparta.springnewsfeed.domain.alarm.repository.AlarmRepository;
+import com.sparta.springnewsfeed.domain.alarm.service.CheckingAlarm;
 import com.sparta.springnewsfeed.domain.likes.entity.ProfileLikes;
 import com.sparta.springnewsfeed.domain.likes.repository.ProfileLikesRepository;
 import com.sparta.springnewsfeed.domain.profile.command.Command;
@@ -29,6 +32,7 @@ public class ProfileService {
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
     private final ProfileLikesRepository profileLikesRepository;
+    private final AlarmRepository alarmRepository;
 
     // 프로필 등록
     public CreateProfileResponseDto createProfile(Long userId, CreateProfileRequestDto createProfileRequestDto) {
@@ -82,11 +86,18 @@ public class ProfileService {
 
     // 프로필 조회
     @Transactional(readOnly = true)
-    public GetProfileResponseDto getProfileById(Long profileId) {
+    public GetProfileResponseDto getProfileById(Long profileId, long userId) {
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(()-> new IllegalArgumentException("선택한 프로필이 없습니다."));
 
-        return new GetProfileResponseDto(profile);
+        String newAlarmCount;
+        if (userId == profileId) {
+            newAlarmCount = String.valueOf(alarmRepository.countByAlarmReceiver_IdAndCheckingAlarm(userId, CheckingAlarm.NEW));
+        } else {
+            newAlarmCount = "null";
+        }
+            return new GetProfileResponseDto(profile, newAlarmCount);
+
     }
 
     // 프로필 좋아요
@@ -105,6 +116,13 @@ public class ProfileService {
         if(existingLike != null){
             Command unlikeCommand = new LikeProfileCommand(profileLikesRepository, user, profile, existingLike);
             unlikeCommand.undo();
+
+            // 알림 저장
+            // 로그인 유저와 프로필 유저가 일치하면 알림 저장 X
+            if (!user.getId().equals(profile.getUser().getId())) {
+                Alarm alarm = Alarm.LikeProfileAlarm(user, profile.getUser());
+                alarmRepository.save(alarm);
+            }
         }else {
             Command likeCommand = new LikeProfileCommand(profileLikesRepository, user, profile, null);
             likeCommand.execute();

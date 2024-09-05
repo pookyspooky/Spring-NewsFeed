@@ -28,8 +28,8 @@ public class ProfileController {
 
     //프로필 조회
     @GetMapping("/profile/{profileId}")
-    public ResponseEntity<GetProfileResponseDto> getProfile(@PathVariable(value = "profileId") Long profileId){
-        GetProfileResponseDto getProfileResponseDto = profileService.getProfileById(profileId);
+    public ResponseEntity<GetProfileResponseDto> getProfile(@PathVariable(value = "profileId") Long profileId, @Auth AuthUser authUser){
+        GetProfileResponseDto getProfileResponseDto = profileService.getProfileById(profileId, authUser.getId());
         return ResponseEntity.ok(getProfileResponseDto);
     }
 
