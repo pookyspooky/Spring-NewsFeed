@@ -1,6 +1,8 @@
 package com.sparta.springnewsfeed.domain.post.entity;
 
-import com.sparta.springnewsfeed.domain.user.entity.Timestamped;
+import com.sparta.springnewsfeed.domain.file.entity.File;
+import com.sparta.springnewsfeed.domain.likes.entity.PostLikes;
+import com.sparta.springnewsfeed.global.entity.Timestamped;
 import com.sparta.springnewsfeed.domain.user.entity.User;
 import com.sparta.springnewsfeed.domain.comment.entity.Comment;
 import jakarta.persistence.*;
@@ -23,13 +25,18 @@ public class Post extends Timestamped {
     @Column(nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)            // 필터 구현하고 나서 주석 해제
-    @JoinColumn(name = "user_id")
-    private User user;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<File> fileList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<PostLikes> likeList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public void setId(Long id) {
         this.id = id;
@@ -45,5 +52,26 @@ public class Post extends Timestamped {
 
     public void setUser(User user) {
         this.user = user;
+    }
+    public int getFileCount(){
+        return fileList.size();
+    }
+
+    public int getLikeCount(){
+        return likeList.size();
+    }
+
+    public int getCommentCount(){
+        return commentList.size();
+    }
+
+    public void addFile(File file) {
+        this.fileList.add(file);
+        file.setPost(this);
+    }
+
+    public void removeFile(File file) {
+        this.fileList.remove(file);
+        file.setPost(null);
     }
 }

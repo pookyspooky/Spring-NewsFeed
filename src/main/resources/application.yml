@@ -11,10 +11,10 @@ spring:
   application:
     name: Spring-Newsfeed
   datasource:
-    url: jdbc:mysql://localhost:3306/newsfeed
-    username: root
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    password: ${SQL_PASSWORD}
+    password: ${DB_PASSWORD}
 
   jpa:
     hibernate:
@@ -26,6 +26,8 @@ spring:
         use_sql_comments: true
         dialect: org.hibernate.dialect.MySQL8Dialect
 
+file:
+  upload-dir: /path/to/upload-directory
 
 jwt:
   secret:

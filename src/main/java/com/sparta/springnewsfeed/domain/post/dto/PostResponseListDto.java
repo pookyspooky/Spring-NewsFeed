@@ -1,13 +1,13 @@
 package com.sparta.springnewsfeed.domain.post.dto;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sparta.springnewsfeed.domain.post.entity.Post;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 @Setter
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@Getter
 public class PostResponseListDto {
     private Long id;
     private String title;
@@ -16,7 +16,9 @@ public class PostResponseListDto {
     private LocalDateTime createdAt;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedAt;
-    private Integer commentCount;
+    private int fileCount;
+    private int commentCount;
+    private int likeCount;
 
     public static PostResponseListDto fromEntity(Post post){
         PostResponseListDto dto = new PostResponseListDto();
@@ -25,7 +27,9 @@ public class PostResponseListDto {
         dto.setContent(post.getContent());
         dto.setCreatedAt(post.getCreatedAt());
         dto.setModifiedAt(post.getModifiedAt());
-        dto.setCommentCount(post.getCommentList().size());
+        dto.setFileCount(post.getFileCount());
+        dto.setCommentCount(post.getCommentCount());
+        dto.setLikeCount(post.getLikeCount());
         return dto;
     }
 }

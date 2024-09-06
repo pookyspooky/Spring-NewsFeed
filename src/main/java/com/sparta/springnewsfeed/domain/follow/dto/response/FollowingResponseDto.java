@@ -7,15 +7,15 @@ import lombok.Getter;
 public class FollowingResponseDto {
 
     private long id;
-    private long userId;
     private long followingId;
+    private String followingName;
     private String checkingAccepted;
 
     public FollowingResponseDto(Follow follow) {
         this.id = follow.getId();
-        this.userId = follow.getUser().getId();
         this.followingId = follow.getFollowing().getId();
-        this.checkingAccepted = follow.getAccepted();
+        this.followingName = follow.getFollowing().getUsername();
+        this.checkingAccepted = follow.getAccepted().toString();
     }
 
 }
