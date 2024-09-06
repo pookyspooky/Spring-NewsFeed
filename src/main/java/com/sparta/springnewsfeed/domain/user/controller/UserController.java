@@ -58,4 +58,9 @@ public class UserController {
     public void test(@Auth AuthUser authUser) {
         log.info("authUser| userName={} id={} email={}", authUser.getUserName(),authUser.getId(),authUser.getEmail());
     }
+
+    @GetMapping("/test")
+    public void test(@Auth AuthUser authUser) {
+        log.info("authUser| userName={} id={} email={}", authUser.getUserName(),authUser.getId(),authUser.getEmail());
+    }
 }
